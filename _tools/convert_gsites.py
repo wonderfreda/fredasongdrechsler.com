@@ -49,7 +49,7 @@ TITLES = {
 # Pages rebuilt by hand; linked to but never regenerated.
 ALL_TARGETS = {**PAGES, "cv": "cv.qmd", "home": "index.qmd", "": "index.qmd",
                "data-crunching": "data-crunching/index.qmd",
-               "data-crunching/momentum": "data-crunching/momentum.qmd"}
+               "data-crunching/momentum": "data-crunching/momentum.ipynb"}
 
 BLOCK = re.compile(
     r'data-code="(?P<code>[^"]*)"'

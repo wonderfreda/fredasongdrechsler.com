@@ -1,6 +1,12 @@
 project:
   type: website
   output-dir: _site
+  render:
+    - "*.qmd"
+    - "**/*.qmd"
+    - "data-crunching/*.ipynb"
+  resources:
+    - "notebooks/*.ipynb"
 
 website:
   title: "Freda Song Drechsler"
@@ -49,7 +55,7 @@ website:
               href: data-crunching/connect-wrds.qmd
         - section: Anomalies & risk factors
           contents:
-            - data-crunching/momentum.qmd
+            - data-crunching/momentum.ipynb
             - text: Fama–French 3-Factor
               href: data-crunching/fama-french.qmd
             - text: DGTW Benchmarks
