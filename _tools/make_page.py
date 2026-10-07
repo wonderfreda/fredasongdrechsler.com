@@ -53,7 +53,7 @@ PAGES = {
 - linking through CUSIPs
 - linking through Tickers
 
-As CUSIPs are more reliable company identifiers, we first try to match as much as possible through it. For the remaining ones that are not matched through CUSIP, we turn to TICKER as last resort. To impose additional layer of quality check, I add a company name matching layer on top of matching through CUSIPs and TICKERs. Name matching is done through FuzzyWuzzy package, but there can be many other fuzzy name matching methods.""",
+As CUSIPs are more reliable company identifiers, we first try to match as much as possible through it. For the remaining ones that are not matched through CUSIP, we turn to TICKER as last resort. To impose additional layer of quality check, I add a company name matching layer on top of matching through CUSIPs and TICKERs. Name matching is done through RapidFuzz package (the successor to FuzzyWuzzy), but there can be many other fuzzy name matching methods.""",
     ),
 }
 
