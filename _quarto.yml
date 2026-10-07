@@ -57,7 +57,7 @@ website:
           contents:
             - data-crunching/momentum.ipynb
             - text: Fama–French 3-Factor
-              href: data-crunching/fama-french.qmd
+              href: data-crunching/fama-french.ipynb
             - text: DGTW Benchmarks
               href: data-crunching/dgtw.qmd
             - text: Linking IBES and CRSP

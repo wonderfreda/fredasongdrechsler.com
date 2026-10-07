@@ -26,7 +26,6 @@ PAGES = {
     "intro-to-python-for-fnce/sp500-constituents": "intro-to-python-for-fnce/sp500-constituents.qmd",
     "intro-to-python-for-fnce/exchange-rate": "intro-to-python-for-fnce/exchange-rate.qmd",
     "data-crunching/connect-wrds": "data-crunching/connect-wrds.qmd",
-    "data-crunching/fama-french": "data-crunching/fama-french.qmd",
     "data-crunching/dgtw": "data-crunching/dgtw.qmd",
     "data-crunching/iclink": "data-crunching/iclink.qmd",
     "data-crunching/pead": "data-crunching/pead.qmd",
@@ -49,7 +48,8 @@ TITLES = {
 # Pages rebuilt by hand; linked to but never regenerated.
 ALL_TARGETS = {**PAGES, "cv": "cv.qmd", "home": "index.qmd", "": "index.qmd",
                "data-crunching": "data-crunching/index.qmd",
-               "data-crunching/momentum": "data-crunching/momentum.ipynb"}
+               "data-crunching/momentum": "data-crunching/momentum.ipynb",
+               "data-crunching/fama-french": "data-crunching/fama-french.ipynb"}
 
 BLOCK = re.compile(
     r'data-code="(?P<code>[^"]*)"'
