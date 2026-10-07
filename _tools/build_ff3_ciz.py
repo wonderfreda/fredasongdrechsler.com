@@ -28,7 +28,8 @@ def replace(i, old, new):
 
 
 replace(0, "import matplotlib.pyplot as plt\n",
-        "import matplotlib.pyplot as plt\nimport plotly.graph_objects as go\nimport plotly.io as pio\n")
+        "import matplotlib.pyplot as plt\nimport plotly.graph_objects as go\nimport plotly.io as pio\n"
+        "from plotly.subplots import make_subplots\n")
 replace(0, "from scipy import stats", "from scipy import stats\n\npio.renderers.default = 'notebook_connected'")
 # Sample extended to June 2026: CRSP quarterly update (the annual crsp library ends December 2025)
 replace(6, "# sql similar to crspmerge macro\n",
@@ -47,9 +48,40 @@ replace(27, "_ff=_ff[['date','smb','hml']]",
 assert cells[29].source.lstrip().startswith("plt.figure"), "cell 29 is not the comparison chart"
 assert not cells[30].source.strip(), "cell 30 is not empty"
 
-chart_md = nbf.v4.new_markdown_cell("""### Comparison charts
+monthly_md = nbf.v4.new_markdown_cell("""### Comparison charts
 
-Growth of $1 invested in each factor, replicated from CRSP CIZ (blue) against the Ken French data library
+Monthly factor returns, replicated from CRSP CIZ (blue) against the Ken French data library factors on
+WRDS (orange). Hover over the chart for both returns in a given month; drag across a period to zoom in.""")
+
+monthly_chart = nbf.v4.new_code_cell("""#################################
+# Monthly Factor Returns        #
+#################################
+fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.14,
+                    subplot_titles=('SMB', 'HML'))
+for row, (ff_col, w_col, name) in enumerate([('smb','WSMB','SMB'), ('hml','WHML','HML')], start=1):
+    # Ken French drawn first, replicated on top, so differences show in both colors
+    for col, label, color, width, opacity in [(ff_col, 'Ken French', '#eb6834', 1.6, 1.0),
+                                              (w_col, 'Replicated (CRSP CIZ)', '#2a78d6', 1.2, 0.85)]:
+        fig.add_trace(go.Scatter(x=_ffcomp.index, y=_ffcomp[col], name=label, mode='lines', opacity=opacity,
+                                 line=dict(color=color, width=width), legendgroup=label, showlegend=(row == 1),
+                                 hovertemplate='%{y:+.2%}<extra>' + f'{label}: {col}' + '</extra>'), row=row, col=1)
+    fig.add_hline(y=0, line=dict(color='#8a8984', width=1), row=row, col=1)
+    fig.update_yaxes(title_text=f'{name} monthly return', tickformat='.0%', gridcolor='#ecebe7',
+                     zeroline=False, row=row, col=1)
+fig.update_xaxes(showgrid=False, ticks='outside', tickcolor='#c3c2b7', linecolor='#c3c2b7',
+                 range=[_ffcomp.index[0], _ffcomp.index[-1]])
+fig.update_annotations(font=dict(size=14, color='#0b0b0b'), x=0, xanchor='left', yshift=6)
+fig.update_layout(
+    title=dict(text=f'Comparison of Results<br><sup style="color:#52514e">Monthly SMB and HML, replicated vs. Ken French, '
+                    f'{_ffcomp.index[0]:%b %Y}–{_ffcomp.index[-1]:%b %Y}</sup>', x=0, xanchor='left'),
+    template='plotly_white', height=760, margin=dict(l=80, r=40, t=100, b=90),
+    font=dict(family='Inter, system-ui, sans-serif', size=13, color='#0b0b0b'),
+    paper_bgcolor='#fcfcfb', plot_bgcolor='#fcfcfb', hovermode='x unified',
+    legend=dict(orientation='h', x=0, y=-0.07, yanchor='top'),
+)
+fig.show()""")
+
+chart_md = nbf.v4.new_markdown_cell("""Growth of $1 invested in each factor, replicated from CRSP CIZ (blue) against the Ken French data library
 factors on WRDS (orange), on a log scale. Hover over a line for the month, the value of $1 and the two
 monthly factor returns.""")
 
@@ -100,6 +132,6 @@ def factor_chart(ff_col, w_col, name):
 smb_chart = nbf.v4.new_code_cell("""factor_chart('smb', 'WSMB', 'SMB').show()""")
 hml_chart = nbf.v4.new_code_cell("""factor_chart('hml', 'WHML', 'HML').show()""")
 
-nb.cells = cells[:29] + [chart_md, chart_style, smb_chart, hml_chart]
+nb.cells = cells[:29] + [monthly_md, monthly_chart, chart_md, chart_style, smb_chart, hml_chart]
 nbf.write(nb, DEST)
 print(f"wrote {os.path.relpath(DEST, ROOT)} ({len(nb.cells)} cells)")
