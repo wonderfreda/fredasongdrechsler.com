@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Characteristics-Based Benchmarks (DGTW) – Freda Song Drechsler</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../data-crunching/iclink.html" rel="next">
+<link href="../data-crunching/fama-french.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-65442d70271d454a29f3353a9a9c231f.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d4318592323045e5894dd1f2449452d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Freda Song Drechsler</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../cv.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../intro-to-python-for-fnce/index.html"> 
+<span class="menu-text">Intro to Python for FNCE</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../data-crunching/index.html" aria-current="page"> 
+<span class="menu-text">Data Crunching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../textual-analysis/index.html"> 
+<span class="menu-text">Textual Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../web-scraping/index.html"> 
+<span class="menu-text">Web Scraping</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../fun-stuff.html"> 
+<span class="menu-text">Fun Stuff</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../data-crunching/momentum.html">Anomalies &amp; risk factors</a></li><li class="breadcrumb-item"><a href="../data-crunching/dgtw.html">DGTW Benchmarks</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Crunching</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Setting up</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/connect-wrds.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Connecting to WRDS</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Anomalies &amp; risk factors</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/momentum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Momentum</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/fama-french.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fama–French 3-Factor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/dgtw.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">DGTW Benchmarks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/iclink.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linking IBES and CRSP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/pead.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Post-Earnings Announcement Drift</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Institutional ownership</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data-crunching/io_breadth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ownership Breadth</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../data-crunching/momentum.html">Anomalies &amp; risk factors</a></li><li class="breadcrumb-item"><a href="../data-crunching/dgtw.html">DGTW Benchmarks</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Characteristics-Based Benchmarks (DGTW)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This code is written to replicate the characteristics-based benchmarks proposed by <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1540-6261.1997.tb02724.x">Daniel, Grinblatt, Titman and Wermers (1997)</a>, hence the short form DGTW benchmarks. In asset pricing literature, the DGTW benchmarks are widely used to measure the performance of institutional investors based on the portfolio holdings data.</p>
+<div class="btn-row">
+<a class="primary" href="https://drive.google.com/file/d/115dK_Sdua-8QPjKyfp10-aqj2-o9zX1o/view?usp=sharing">Full Code</a>
+</div>
+<p>As always, the first step is to import relevant Python packages and establish connection to WRDS server.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">##########################################</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Characteristics-Based Benchmarks (V4)  #</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Qingyi (Freda) Song Drechsler          #</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Date: May 2018                         #</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Updated: April 2021                    #</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#                                        #</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># V3 Note: Updated book-to-market calc   #</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># to handle division by zero problem     #</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># caused by 0 marketcap                  #</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># V4 Note: Fixed one permno to 2 dgtw    #</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># portfolio assignment problem           #</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">##########################################</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> wrds</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dateutil.relativedelta <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pandas.tseries.offsets <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to WRDS #</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>conn<span class="op">=</span>wrds.Connection()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pricing related information (return, price, shares outstanding) is obtained from CRSP using the following “raw_sql” step.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CRSP Block      #</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># sql similar to crspmerge macro</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Original code set restriction on exchcd - then found out that the sas version</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># did not impose the exchcd restriction - so removed everything</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># added exchcd=-2,-1,0 to address the issue that stocks temp stopped trading</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># without exchcd=-2,-1, 0 the non-trading months will be tossed out in the output</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># leading to wrong cumret calculation in momentum step</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Code  Definition</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -2    Halted by the NYSE or AMEX</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># -1    Suspended by the NYSE, AMEX, or NASDAQ</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 0 Not Trading on NYSE, AMEX, or NASDAQ</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 New York Stock Exchange</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 American Stock Exchange</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 The Nasdaq Stock Market(SM)</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>crsp_m <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="st">                      select a.permno, a.permco, b.ncusip, a.date, </span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="st">                      b.shrcd, b.exchcd, b.siccd,</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="st">                      a.ret, a.vol, a.shrout, a.prc, a.cfacpr, a.cfacshr</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="st">                      from crsp.msf as a</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="st">                      left join crsp.msenames as b</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="st">                      on a.permno=b.permno</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="st">                      and b.namedt&lt;=a.date</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="st">                      and a.date&lt;=b.nameendt</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="st">                      where a.date between '01/01/1970' and '12/31/2017'</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="st">                      and b.shrcd between 10 and 11</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="st">                      """</span>, date_cols <span class="op">=</span> [<span class="st">'date'</span>]) </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># change variable format to int</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>crsp_m[[<span class="st">'permco'</span>,<span class="st">'permno'</span>,<span class="st">'shrcd'</span>,<span class="st">'exchcd'</span>]]<span class="op">=\</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    crsp_m[[<span class="st">'permco'</span>,<span class="st">'permno'</span>,<span class="st">'shrcd'</span>,<span class="st">'exchcd'</span>]].astype(<span class="bu">int</span>)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Line up date to be end of month</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>crsp_m[<span class="st">'jdate'</span>]<span class="op">=</span>crsp_m[<span class="st">'date'</span>]<span class="op">+</span>MonthEnd(<span class="dv">0</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"># price adjusted</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>crsp_m[<span class="st">'p'</span>]<span class="op">=</span>crsp_m[<span class="st">'prc'</span>].<span class="bu">abs</span>()<span class="op">/</span>crsp_m[<span class="st">'cfacpr'</span>] </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># total shares out adjusted</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>crsp_m[<span class="st">'tso'</span>]<span class="op">=</span>crsp_m[<span class="st">'shrout'</span>]<span class="op">*</span>crsp_m[<span class="st">'cfacshr'</span>]<span class="op">*</span><span class="fl">1e3</span> </span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co"># market cap in $mil</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>crsp_m[<span class="st">'me'</span>] <span class="op">=</span> crsp_m[<span class="st">'p'</span>]<span class="op">*</span>crsp_m[<span class="st">'tso'</span>]<span class="op">/</span><span class="fl">1e6</span> </span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co"># sum of me across different permno belonging to same permco a given date</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>crsp_summe <span class="op">=</span> crsp_m.groupby([<span class="st">'jdate'</span>,<span class="st">'permco'</span>])[<span class="st">'me'</span>].<span class="bu">sum</span>().reset_index()<span class="op">\</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    .rename(columns<span class="op">=</span>{<span class="st">'me'</span>:<span class="st">'me_comp'</span>})</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>crsp_m<span class="op">=</span>pd.merge(crsp_m, crsp_summe, how<span class="op">=</span><span class="st">'inner'</span>, on<span class="op">=</span>[<span class="st">'jdate'</span>,<span class="st">'permco'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Compustat Fundamental Annual contains the financial statement related information needed for calculating book value of equity.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compustat Block #</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>comp <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">                    select gvkey, datadate, cusip, </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">                    sich, seq, pstkrv, pstkl, pstk, txdb, itcb</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">                    from comp.funda</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">                    where indfmt='INDL' </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">                    and datafmt='STD'</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">                    and popsrc='D'</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">                    and consol='C'</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="st">                    and datadate &gt;= '01/01/1970'</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="st">                    """</span>, date_cols<span class="op">=</span>[<span class="st">'datadate'</span>])</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>comp[<span class="st">'year'</span>]<span class="op">=</span>comp[<span class="st">'datadate'</span>].dt.year</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># select sample where seq is greater than 0</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>comp <span class="op">=</span> comp.loc[comp[<span class="st">'seq'</span>]<span class="op">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># create preferrerd stock:</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 1st choice: Preferred stock - Redemption Value</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 2nd choice: Preferred stock - Liquidating Value</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 3rd choice: Preferred stock - Carrying Value, Stock (Capital) - Total</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>comp[<span class="st">'pref'</span>]<span class="op">=</span>np.where(comp[<span class="st">'pstkrv'</span>].isnull(), comp[<span class="st">'pstkl'</span>], comp[<span class="st">'pstkrv'</span>])</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>comp[<span class="st">'pref'</span>]<span class="op">=</span>np.where(comp[<span class="st">'pref'</span>].isnull(),comp[<span class="st">'pstk'</span>], comp[<span class="st">'pref'</span>])</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>comp[<span class="st">'pref'</span>]<span class="op">=</span>np.where(comp[<span class="st">'pref'</span>].isnull(),<span class="dv">0</span>,comp[<span class="st">'pref'</span>])</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co"># fill in missing values for deferred taxes and investment tax credit</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>comp[<span class="st">'txdb'</span>]<span class="op">=</span>comp[<span class="st">'txdb'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>comp[<span class="st">'itcb'</span>]<span class="op">=</span>comp[<span class="st">'itcb'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co"># create book equity</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Daniel and Titman (JF 1997):    </span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co"># BE = stockholders' equity + deferred taxes + investment tax credit - Preferred Stock</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>comp[<span class="st">'be'</span>]<span class="op">=</span>comp[<span class="st">'seq'</span>]<span class="op">+</span>comp[<span class="st">'txdb'</span>]<span class="op">+</span>comp[<span class="st">'itcb'</span>]<span class="op">-</span>comp[<span class="st">'pref'</span>]</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># keep only records with non-negative book equity</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>comp <span class="op">=</span> comp.loc[comp[<span class="st">'be'</span>]<span class="op">&gt;=</span><span class="dv">0</span>]</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>comp<span class="op">=</span>comp[[<span class="st">'gvkey'</span>,<span class="st">'datadate'</span>,<span class="st">'year'</span>,<span class="st">'be'</span>,<span class="st">'sich'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To link these two sources together, CRSP provides a handy linking table to join the key identifiers, permco and gvkey, from both databases.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Historical PERMCO #</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ccm<span class="op">=</span>conn.raw_sql(<span class="st">"""</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">                  select gvkey, lpermno as permno, lpermco as permco, linktype, linkprim, </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">                  linkdt, linkenddt</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">                  from crsp.ccmxpf_linktable</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">                  where (linktype ='LU' or linktype='LC')</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">                  and linkprim in ('P', 'C') and usedflag=1</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="st">                  """</span>, date_cols<span class="op">=</span>[<span class="st">'linkdt'</span>, <span class="st">'linkenddt'</span>])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># if linkenddt is missing then set to today date</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ccm[<span class="st">'linkenddt'</span>]<span class="op">=</span>ccm[<span class="st">'linkenddt'</span>].fillna(pd.to_datetime(<span class="st">'today'</span>))</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ccm1<span class="op">=</span>pd.merge(comp,ccm,how<span class="op">=</span><span class="st">'left'</span>,on<span class="op">=</span>[<span class="st">'gvkey'</span>])</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ccm1[<span class="st">'jdate'</span>]<span class="op">=</span>ccm1[<span class="st">'datadate'</span>]<span class="op">+</span>MonthEnd(<span class="dv">0</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ccm1[<span class="st">'year'</span>]<span class="op">=</span>ccm1.datadate.dt.year</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Impose date ranges</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>ccm2 <span class="op">=</span> ccm1[(ccm1[<span class="st">'datadate'</span>]<span class="op">&gt;=</span>ccm1[<span class="st">'linkdt'</span>])<span class="op">&amp;</span>(ccm1[<span class="st">'datadate'</span>]<span class="op">&lt;=</span>ccm1[<span class="st">'linkenddt'</span>])].drop(columns<span class="op">=</span>[<span class="st">'linktype'</span>, <span class="st">'linkdt'</span>, <span class="st">'linkenddt'</span>])</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>comp1 <span class="op">=</span> pd.merge(ccm2, crsp_m[[<span class="st">'permno'</span>,<span class="st">'permco'</span>,<span class="st">'date'</span>,<span class="st">'jdate'</span>,<span class="st">'siccd'</span>,<span class="st">'me'</span>,<span class="st">'me_comp'</span>]], how<span class="op">=</span><span class="st">'inner'</span>, on<span class="op">=</span>[<span class="st">'permco'</span>, <span class="st">'permno'</span>, <span class="st">'jdate'</span>])</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Edit December 2020: correct the division by 0 problem caused by missing market cap</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Use a conditioning statement to address this problem</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Old Code: comp3['bm']=comp3['be'].div(comp3['me_comp'])</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># New calculation</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>comp1[<span class="st">'bm'</span>] <span class="op">=</span> np.where(comp1.me_comp<span class="op">&gt;</span><span class="dv">0</span>, comp1.be <span class="op">/</span> comp1.me_comp, np.nan)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>comp2 <span class="op">=</span> comp1.sort_values([<span class="st">'permno'</span>, <span class="st">'year'</span>, <span class="st">'datadate'</span>, <span class="st">'linkprim'</span>, <span class="st">'bm'</span>])<span class="op">\</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    .drop_duplicates()</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># pick max datadate for a given permno year combo (firm changes fiscal period)</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>maxdatadate<span class="op">=</span>comp2.groupby([<span class="st">'permno'</span>,<span class="st">'year'</span>])[<span class="st">'datadate'</span>].<span class="bu">max</span>()<span class="op">\</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>comp3 <span class="op">=</span> pd.merge(comp2, maxdatadate, how<span class="op">=</span><span class="st">'inner'</span>, on<span class="op">=</span>[<span class="st">'permno'</span>,<span class="st">'year'</span>,<span class="st">'datadate'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Below is a somewhat clumsy function to assign stocks into Fama-French 48 industry classification based on the historical SIC codes. Please refer to <a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_48_ind_port.html">Ken French’s site</a> for a detailed text file describing the classification scheme.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign Fama-French 48 #</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># function to assign ffi48 classification</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ffi48(row):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="dv">100</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>] <span class="op">&lt;=</span><span class="dv">299</span>) <span class="kw">or</span> (<span class="dv">700</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">799</span>) <span class="kw">or</span> (<span class="dv">910</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">919</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">2048</span>):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Agric'</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2000</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2046</span>) <span class="kw">or</span> (<span class="dv">2050</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2063</span>) <span class="kw">or</span> (<span class="dv">2070</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2079</span>)<span class="op">\</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">2090</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2092</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">2095</span>) <span class="kw">or</span> (<span class="dv">2098</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2099</span>):</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Food'</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2064</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2068</span>) <span class="kw">or</span> (<span class="dv">2086</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2087</span>) <span class="kw">or</span> (<span class="dv">2096</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2097</span>):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">3</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Soda'</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">2080</span>) <span class="kw">or</span> (<span class="dv">2082</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2085</span>):</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">4</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Beer'</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2100</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2199</span>):</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Smoke'</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">920</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">999</span>) <span class="kw">or</span> (<span class="dv">3650</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3652</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3732</span>) <span class="kw">or</span> (<span class="dv">3930</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3931</span>) <span class="kw">or</span> (<span class="dv">3940</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3949</span>):</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">6</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Toys'</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">7800</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7833</span>) <span class="kw">or</span> (<span class="dv">7840</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7841</span>) <span class="kw">or</span>(row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7900</span>)<span class="kw">or</span> (<span class="dv">7910</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7911</span>) <span class="kw">or</span> (<span class="dv">7920</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7933</span>)<span class="op">\</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">7940</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7949</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7980</span>) <span class="kw">or</span> (<span class="dv">7990</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7999</span>):</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">7</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Fun'</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2700</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2749</span>) <span class="kw">or</span> (<span class="dv">2770</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2771</span>) <span class="kw">or</span> (<span class="dv">2780</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2799</span>):</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">8</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Books'</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">2047</span>) <span class="kw">or</span> (<span class="dv">2391</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2392</span>) <span class="kw">or</span> (<span class="dv">2510</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2519</span>) <span class="kw">or</span> (<span class="dv">2590</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2599</span>) <span class="kw">or</span> (<span class="dv">2840</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2844</span>)<span class="op">\</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3160</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3161</span>) <span class="kw">or</span> (<span class="dv">3170</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3172</span>) <span class="kw">or</span> (<span class="dv">3190</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3199</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3229</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3260</span>)<span class="op">\</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3262</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3263</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3269</span>) <span class="kw">or</span> (<span class="dv">3230</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3231</span>) <span class="kw">or</span>(<span class="dv">3630</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3639</span>) <span class="kw">or</span> (<span class="dv">3750</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3751</span>)<span class="op">\</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3800</span>) <span class="kw">or</span> (<span class="dv">3860</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3861</span>) <span class="kw">or</span> (<span class="dv">3870</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3873</span>) <span class="kw">or</span> (<span class="dv">3910</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3911</span>) <span class="kw">or</span> (<span class="dv">3914</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3915</span>)<span class="op">\</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3960</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3962</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3991</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3995</span>):</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">9</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Hshld'</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2300</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2390</span>) <span class="kw">or</span> (<span class="dv">3020</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3021</span>) <span class="kw">or</span> (<span class="dv">3100</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3111</span>)<span class="op">\</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3130</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3131</span>) <span class="kw">or</span> (<span class="dv">3140</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3151</span>) <span class="kw">or</span> (<span class="dv">3963</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3965</span>):</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Clths'</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">8000</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8099</span>):</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Hlth'</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3693</span>) <span class="kw">or</span> (<span class="dv">3840</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3851</span>):</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">12</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'MedEq'</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2830</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2831</span>) <span class="kw">or</span> (<span class="dv">2833</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2836</span>):</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">13</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Drugs'</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2800</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2829</span>) <span class="kw">or</span> (<span class="dv">2850</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2879</span>) <span class="kw">or</span> (<span class="dv">2890</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2899</span>):</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">14</span></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Chems'</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3031</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3041</span>) <span class="kw">or</span> (<span class="dv">3050</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3053</span>) <span class="kw">or</span> (<span class="dv">3060</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3069</span>) <span class="kw">or</span> (<span class="dv">3070</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3099</span>):</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">15</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Rubbr'</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2200</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2284</span>) <span class="kw">or</span> (<span class="dv">2290</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2295</span>) <span class="kw">or</span> (<span class="dv">2297</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2299</span>) <span class="kw">or</span> (<span class="dv">2393</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2395</span>) <span class="kw">or</span> (<span class="dv">2397</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2399</span>):</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">16</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Txtls'</span></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">800</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">899</span>) <span class="kw">or</span> (<span class="dv">2400</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2439</span>) <span class="kw">or</span> (<span class="dv">2450</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2459</span>) <span class="kw">or</span> (<span class="dv">2490</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2499</span>) <span class="kw">or</span> (<span class="dv">2660</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2661</span>)<span class="op">\</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">2950</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2952</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3200</span>) <span class="kw">or</span> (<span class="dv">3210</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3211</span>) <span class="kw">or</span> (<span class="dv">3240</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3241</span>) <span class="kw">or</span> (<span class="dv">3250</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3259</span>)<span class="op">\</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3261</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3264</span>) <span class="kw">or</span> (<span class="dv">3270</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3275</span>) <span class="kw">or</span> (<span class="dv">3280</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3281</span>) <span class="kw">or</span> (<span class="dv">3290</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3293</span>)<span class="op">\</span></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3295</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3299</span>) <span class="kw">or</span> (<span class="dv">3420</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3433</span>) <span class="kw">or</span> (<span class="dv">3440</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3442</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3446</span>) <span class="kw">or</span> (<span class="dv">3448</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3452</span>)<span class="op">\</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3490</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3499</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3996</span>):</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">17</span></span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'BldMt'</span></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">1500</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1511</span>) <span class="kw">or</span> (<span class="dv">1520</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1549</span>) <span class="kw">or</span> (<span class="dv">1600</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1799</span>):</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">18</span></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Cnstr'</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3300</span>) <span class="kw">or</span> (<span class="dv">3310</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3317</span>) <span class="kw">or</span> (<span class="dv">3320</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3325</span>) <span class="kw">or</span> (<span class="dv">3330</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3341</span>) <span class="kw">or</span>(<span class="dv">3350</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3357</span>)<span class="op">\</span></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3360</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3379</span>) <span class="kw">or</span> (<span class="dv">3390</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3399</span>):</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">19</span></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Steel'</span></span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3400</span>) <span class="kw">or</span> (<span class="dv">3443</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3444</span>) <span class="kw">or</span> (<span class="dv">3460</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3479</span>):</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">20</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'FabPr'</span></span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">3510</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3536</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3538</span>) <span class="kw">or</span> (<span class="dv">3540</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3569</span>)<span class="op">\</span></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3580</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3582</span>) <span class="kw">or</span> (<span class="dv">3585</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3586</span>) <span class="kw">or</span> (<span class="dv">3589</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3599</span>):</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">21</span></span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Mach'</span></span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3600</span>) <span class="kw">or</span> (<span class="dv">3610</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3613</span>) <span class="kw">or</span> (<span class="dv">3620</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3621</span>) <span class="kw">or</span> (<span class="dv">3623</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3629</span>) <span class="kw">or</span> (<span class="dv">3640</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3646</span>)<span class="op">\</span></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">3648</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3649</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3660</span>) <span class="kw">or</span> (<span class="dv">3690</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3692</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3699</span>):</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>            ffi48<span class="op">=</span><span class="dv">22</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>            ffi48_desc<span class="op">=</span><span class="st">'ElcEq'</span></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">2296</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">2396</span>) <span class="kw">or</span> (<span class="dv">3010</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3011</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3537</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3647</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3694</span>)<span class="op">\</span></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3700</span>) <span class="kw">or</span> (<span class="dv">3710</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3711</span>) <span class="kw">or</span> (<span class="dv">3713</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3716</span>) <span class="kw">or</span> (<span class="dv">3790</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3792</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3799</span>):</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">23</span></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Autos'</span></span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">3720</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3721</span>) <span class="kw">or</span> (<span class="dv">3723</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3725</span>) <span class="kw">or</span> (<span class="dv">3728</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3729</span>):</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">24</span></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Aero'</span></span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">3730</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3731</span>) <span class="kw">or</span> (<span class="dv">3740</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3743</span>):</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">25</span></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Ships'</span></span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">3760</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3769</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3795</span>) <span class="kw">or</span> (<span class="dv">3480</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3489</span>):</span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">26</span></span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Guns'</span></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">1040</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1049</span>):</span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">27</span></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Gold'</span></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">1000</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1039</span>) <span class="kw">or</span> (<span class="dv">1050</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1119</span>) <span class="kw">or</span> (<span class="dv">1400</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1499</span>):</span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">28</span></span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Mines'</span></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">1200</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1299</span>):</span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">29</span></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Coal'</span></span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">1300</span>) <span class="kw">or</span> (<span class="dv">1310</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1339</span>) <span class="kw">or</span> (<span class="dv">1370</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">1382</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">1389</span>) <span class="kw">or</span> (<span class="dv">2900</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2912</span>) <span class="kw">or</span> (<span class="dv">2990</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2999</span>):</span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">30</span></span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Oil'</span></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">4900</span>) <span class="kw">or</span> (<span class="dv">4910</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4911</span>) <span class="kw">or</span> (<span class="dv">4920</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4925</span>) <span class="kw">or</span> (<span class="dv">4930</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4932</span>) <span class="kw">or</span> (<span class="dv">4939</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4942</span>):</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">31</span></span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Util'</span></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">4800</span>) <span class="kw">or</span> (<span class="dv">4810</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4813</span>) <span class="kw">or</span> (<span class="dv">4820</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4822</span>) <span class="kw">or</span> (<span class="dv">4830</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4841</span>) <span class="kw">or</span> (<span class="dv">4880</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4892</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">4899</span>):</span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">32</span></span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Telcm'</span></span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">7020</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7021</span>) <span class="kw">or</span> (<span class="dv">7030</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7033</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7200</span>) <span class="kw">or</span> (<span class="dv">7210</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7212</span>) <span class="kw">or</span> (<span class="dv">7214</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7217</span>)<span class="op">\</span></span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">7219</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7221</span>) <span class="kw">or</span> (<span class="dv">7230</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7231</span>) <span class="kw">or</span> (<span class="dv">7240</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7241</span>) <span class="kw">or</span> (<span class="dv">7250</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7251</span>) <span class="kw">or</span> (<span class="dv">7260</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7299</span>)<span class="op">\</span></span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7395</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7500</span>) <span class="kw">or</span> (<span class="dv">7520</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7549</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7600</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7620</span>)<span class="op">\</span></span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">7622</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7623</span>) <span class="kw">or</span> (<span class="dv">7629</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7631</span>) <span class="kw">or</span> (<span class="dv">7640</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7641</span>) <span class="kw">or</span> (<span class="dv">7690</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7699</span>) <span class="kw">or</span> (<span class="dv">8100</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8499</span>)<span class="op">\</span></span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">8600</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8699</span>) <span class="kw">or</span> (<span class="dv">8800</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8899</span>) <span class="kw">or</span> (<span class="dv">7510</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7515</span>):</span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">33</span></span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'PerSv'</span></span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2750</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2759</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3993</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7218</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7300</span>) <span class="kw">or</span> (<span class="dv">7310</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7342</span>)<span class="op">\</span></span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">7349</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7353</span>) <span class="kw">or</span> (<span class="dv">7359</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7372</span>) <span class="kw">or</span> (<span class="dv">7374</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7385</span>) <span class="kw">or</span> (<span class="dv">7389</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7394</span>) <span class="kw">or</span> (<span class="dv">7396</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7397</span>)<span class="op">\</span></span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7399</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7519</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">8700</span>) <span class="kw">or</span> (<span class="dv">8710</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8713</span>) <span class="kw">or</span> (<span class="dv">8720</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8721</span>) <span class="op">\</span></span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">8730</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8734</span>) <span class="kw">or</span> (<span class="dv">8740</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8748</span>) <span class="kw">or</span> (<span class="dv">8900</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8911</span>) <span class="kw">or</span> (<span class="dv">8920</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">8999</span>) <span class="kw">or</span> (<span class="dv">4220</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4229</span>):</span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">34</span></span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'BusSv'</span></span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">3570</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3579</span>) <span class="kw">or</span> (<span class="dv">3680</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3689</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3695</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7373</span>):</span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">35</span></span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Comps'</span></span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3622</span>) <span class="kw">or</span> (<span class="dv">3661</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3666</span>) <span class="kw">or</span> (<span class="dv">3669</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3679</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3810</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3812</span>):</span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">36</span></span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Chips'</span></span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">3811</span>) <span class="kw">or</span> (<span class="dv">3820</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3827</span>) <span class="kw">or</span> (<span class="dv">3829</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3839</span>):</span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">37</span></span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'LabEq'</span></span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2520</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2549</span>) <span class="kw">or</span> (<span class="dv">2600</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2639</span>) <span class="kw">or</span> (<span class="dv">2670</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2699</span>) <span class="kw">or</span> (<span class="dv">2760</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2761</span>) <span class="kw">or</span> (<span class="dv">3950</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3955</span>):</span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">38</span></span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Paper'</span></span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">2440</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2449</span>) <span class="kw">or</span> (<span class="dv">2640</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">2659</span>) <span class="kw">or</span> (<span class="dv">3220</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3221</span>) <span class="kw">or</span> (<span class="dv">3410</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">3412</span>):</span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">39</span></span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Boxes'</span></span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">4000</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4013</span>) <span class="kw">or</span> (<span class="dv">4040</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4049</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">4100</span>)  <span class="kw">or</span> (<span class="dv">4110</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4121</span>) <span class="kw">or</span> (<span class="dv">4130</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4131</span>)<span class="op">\</span></span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">4140</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4142</span>) <span class="kw">or</span> (<span class="dv">4150</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4151</span>) <span class="kw">or</span> (<span class="dv">4170</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4173</span>) <span class="kw">or</span> (<span class="dv">4190</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4200</span>)<span class="op">\</span></span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">4210</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4219</span>) <span class="kw">or</span> (<span class="dv">4230</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4231</span>) <span class="kw">or</span> (<span class="dv">4240</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4249</span>) <span class="kw">or</span> (<span class="dv">4400</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4700</span>) <span class="kw">or</span> (<span class="dv">4710</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4712</span>)<span class="op">\</span></span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">4720</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4749</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">4780</span>) <span class="kw">or</span> (<span class="dv">4782</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4785</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">4789</span>):</span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">40</span></span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Trans'</span></span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">5000</span>) <span class="kw">or</span> (<span class="dv">5010</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5015</span>) <span class="kw">or</span> (<span class="dv">5020</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5023</span>) <span class="kw">or</span> (<span class="dv">5030</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5060</span>) <span class="kw">or</span> (<span class="dv">5063</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5065</span>)<span class="op">\</span></span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">5070</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5078</span>) <span class="kw">or</span> (<span class="dv">5080</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5088</span>) <span class="kw">or</span> (<span class="dv">5090</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5094</span>) <span class="kw">or</span> (<span class="dv">5099</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5100</span>)<span class="op">\</span></span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">5110</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5113</span>) <span class="kw">or</span> (<span class="dv">5120</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5122</span>) <span class="kw">or</span> (<span class="dv">5130</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5172</span>) <span class="kw">or</span> (<span class="dv">5180</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5182</span>) <span class="kw">or</span> (<span class="dv">5190</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5199</span>):</span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">41</span></span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Whlsl'</span></span>
+<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">5200</span>) <span class="kw">or</span> (<span class="dv">5210</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5231</span>) <span class="kw">or</span> (<span class="dv">5250</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5251</span>) <span class="kw">or</span> (<span class="dv">5260</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5261</span>) <span class="kw">or</span> (<span class="dv">5270</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5271</span>)<span class="op">\</span></span>
+<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">5300</span>) <span class="kw">or</span> (<span class="dv">5310</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5311</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">5320</span>) <span class="kw">or</span> (<span class="dv">5330</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5331</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">5334</span>)<span class="op">\</span></span>
+<span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">5340</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5349</span>) <span class="kw">or</span> (<span class="dv">5390</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5400</span>) <span class="kw">or</span> (<span class="dv">5410</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5412</span>) <span class="kw">or</span> (<span class="dv">5420</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5469</span>) <span class="kw">or</span> (<span class="dv">5490</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5500</span>)<span class="op">\</span></span>
+<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">5510</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5579</span>) <span class="kw">or</span> (<span class="dv">5590</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5700</span>) <span class="kw">or</span> (<span class="dv">5710</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5722</span>) <span class="kw">or</span> (<span class="dv">5730</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5736</span>) <span class="kw">or</span> (<span class="dv">5750</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5799</span>)<span class="op">\</span></span>
+<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">5900</span>) <span class="kw">or</span> (<span class="dv">5910</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5912</span>) <span class="kw">or</span> (<span class="dv">5920</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5932</span>) <span class="kw">or</span> (<span class="dv">5940</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5990</span>) <span class="kw">or</span> (<span class="dv">5992</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5995</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">5999</span>):</span>
+<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb5-163"><a href="#cb5-163" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Rtail'</span></span>
+<span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">5800</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5829</span>) <span class="kw">or</span> (<span class="dv">5890</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">5899</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7000</span>) <span class="kw">or</span> (<span class="dv">7010</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7019</span>) <span class="kw">or</span> (<span class="dv">7040</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">7049</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">7213</span>):</span>
+<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">43</span></span>
+<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Meals'</span></span>
+<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">6000</span>) <span class="kw">or</span> (<span class="dv">6010</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6036</span>) <span class="kw">or</span> (<span class="dv">6040</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6062</span>) <span class="kw">or</span> (<span class="dv">6080</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6082</span>) <span class="kw">or</span> (<span class="dv">6090</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6100</span>)<span class="op">\</span></span>
+<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">6110</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6113</span>) <span class="kw">or</span> (<span class="dv">6120</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6179</span>) <span class="kw">or</span> (<span class="dv">6190</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6199</span>):</span>
+<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">44</span></span>
+<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Banks'</span></span>
+<span id="cb5-171"><a href="#cb5-171" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">6300</span>) <span class="kw">or</span> (<span class="dv">6310</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6331</span>) <span class="kw">or</span> (<span class="dv">6350</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6351</span>) <span class="kw">or</span> (<span class="dv">6360</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6361</span>) <span class="kw">or</span> (<span class="dv">6370</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6379</span>) <span class="kw">or</span> (<span class="dv">6390</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6411</span>):</span>
+<span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">45</span></span>
+<span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Insur'</span></span>
+<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">6500</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">6510</span>) <span class="kw">or</span> (<span class="dv">6512</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6515</span>) <span class="kw">or</span> (<span class="dv">6517</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6532</span>) <span class="kw">or</span> (<span class="dv">6540</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6541</span>)<span class="op">\</span></span>
+<span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">6550</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6553</span>) <span class="kw">or</span> (<span class="dv">6590</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6599</span>) <span class="kw">or</span> (<span class="dv">6610</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6611</span>):</span>
+<span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">46</span></span>
+<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'RlEst'</span></span>
+<span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">6200</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6299</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">6700</span>) <span class="kw">or</span> (<span class="dv">6710</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6726</span>) <span class="kw">or</span> (<span class="dv">6730</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6733</span>) <span class="kw">or</span> (<span class="dv">6740</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6779</span>)<span class="op">\</span></span>
+<span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span> (<span class="dv">6790</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6795</span>) <span class="kw">or</span> (<span class="dv">6798</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">6799</span>):</span>
+<span id="cb5-180"><a href="#cb5-180" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">47</span></span>
+<span id="cb5-181"><a href="#cb5-181" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Fin'</span></span>
+<span id="cb5-182"><a href="#cb5-182" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> (<span class="dv">4950</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4961</span>) <span class="kw">or</span> (<span class="dv">4970</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4971</span>) <span class="kw">or</span> (<span class="dv">4990</span><span class="op">&lt;=</span>row[<span class="st">'sic'</span>]<span class="op">&lt;=</span><span class="dv">4991</span>) <span class="kw">or</span> (row[<span class="st">'sic'</span>]<span class="op">==</span><span class="dv">9999</span>):</span>
+<span id="cb5-183"><a href="#cb5-183" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span><span class="dv">48</span></span>
+<span id="cb5-184"><a href="#cb5-184" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">'Other'</span></span>
+<span id="cb5-185"><a href="#cb5-185" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-186"><a href="#cb5-186" aria-hidden="true" tabindex="-1"></a>        ffi48<span class="op">=</span>np.nan</span>
+<span id="cb5-187"><a href="#cb5-187" aria-hidden="true" tabindex="-1"></a>        ffi48_desc<span class="op">=</span><span class="st">''</span></span>
+<span id="cb5-188"><a href="#cb5-188" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series({<span class="st">'sic'</span>: row[<span class="st">'sic'</span>], <span class="st">'ffi48'</span>: ffi48, <span class="st">'ffi48_desc'</span>: ffi48_desc})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The function “ffi48” is then applied to the data frame containing joint information of CRSP and Compustat created in the previous step to assign each stock to its proper Fama-French 48 Industry group.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assign SIC code</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>comp4 <span class="op">=</span> comp3</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># First use historical Compustat SIC Code</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Then if missing use historical CRSP SIC Code</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>comp4[<span class="st">'sic'</span>]<span class="op">=</span>np.where(comp4[<span class="st">'sich'</span>]<span class="op">&gt;</span><span class="dv">0</span>, comp4[<span class="st">'sich'</span>], comp4[<span class="st">'siccd'</span>])</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># and adjust some SIC code to fit F&amp;F 48 ind delineation</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>comp4[<span class="st">'sic'</span>]<span class="op">=</span>np.where((comp4[<span class="st">'sic'</span>].isin([<span class="dv">3990</span>, <span class="dv">9995</span>, <span class="dv">9997</span>])) <span class="op">&amp;</span> (comp4[<span class="st">'siccd'</span>]<span class="op">&gt;</span><span class="dv">0</span>) <span class="op">&amp;</span> (comp4[<span class="st">'sic'</span>] <span class="op">!=</span> comp4[<span class="st">'siccd'</span>]), <span class="op">\</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>             comp4[<span class="st">'siccd'</span>], comp4[<span class="st">'sic'</span>])</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>comp4[<span class="st">'sic'</span>]<span class="op">=</span>np.where(comp4[<span class="st">'sic'</span>].isin([<span class="dv">3990</span>,<span class="dv">3999</span>]), <span class="dv">3991</span>, comp4[<span class="st">'sic'</span>])</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>comp4[<span class="st">'sic'</span>]<span class="op">=</span>comp4.sic.astype(<span class="bu">int</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># assign the ffi48 function to comp4</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>_sic <span class="op">=</span> comp4[<span class="st">'sic'</span>].unique()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>_sicff <span class="op">=</span> pd.DataFrame(_sic).rename(columns<span class="op">=</span>{<span class="dv">0</span>:<span class="st">'sic'</span>})</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>_sicff <span class="op">=</span> _sicff.<span class="bu">apply</span>(ffi48, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>comp4 <span class="op">=</span> pd.merge(comp4, _sicff, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span>[<span class="st">'sic'</span>])</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># keep only records with non-missing bm and ffi48 classification</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>comp4 <span class="op">=</span> comp4[(comp4[<span class="st">'bm'</span>] <span class="op">!=</span> np.NaN) <span class="op">&amp;</span> (comp4[<span class="st">'ffi48_desc'</span>] <span class="op">!=</span><span class="st">''</span>)] </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>comp4 <span class="op">=</span> comp4.drop([<span class="st">'sich'</span>,<span class="st">'siccd'</span>,<span class="st">'datadate'</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>comp4<span class="op">=</span>comp4.sort_values([<span class="st">'ffi48'</span>,<span class="st">'year'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now that we have created an industry classification scheme, the rest are quite straightforward. AS DGTW benchmarks performance based on value, momentum and size of the stocks, we need to calculate the industry averages of these metrics.</p>
+<p>Let’s start with the Book-to-Market ratio.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Industry BM Average   #</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate BM Industry Average Each Period</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>comp4_tmp <span class="op">=</span> comp4[(comp4[<span class="st">'ffi48'</span>]<span class="op">&gt;</span><span class="dv">0</span>)<span class="op">&amp;</span>(comp4[<span class="st">'bm'</span>]<span class="op">&gt;=</span><span class="dv">0</span>)]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>bm_ind <span class="op">=</span> comp4_tmp.groupby([<span class="st">'ffi48'</span>,<span class="st">'year'</span>])[<span class="st">'bm'</span>].mean().reset_index().rename(columns<span class="op">=</span>{<span class="st">'bm'</span>:<span class="st">'bmind'</span>})</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Long-Term Industry BtM Average</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>bm_ind[<span class="st">'n'</span>] <span class="op">=</span> bm_ind.groupby([<span class="st">'ffi48'</span>])[<span class="st">'year'</span>].cumcount()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>bm_ind[<span class="st">'sumbm'</span>]<span class="op">=</span>bm_ind.groupby([<span class="st">'ffi48'</span>])[<span class="st">'bmind'</span>].cumsum()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>bm_ind[<span class="st">'bmavg'</span>] <span class="op">=</span> bm_ind[<span class="st">'sumbm'</span>]<span class="op">/</span>(bm_ind[<span class="st">'n'</span>]<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>bm_ind <span class="op">=</span> bm_ind.drop([<span class="st">'n'</span>,<span class="st">'sumbm'</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust Firm-Specific BtM with Industry Averages</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>comp5 <span class="op">=</span> pd.merge(comp4, bm_ind, how<span class="op">=</span><span class="st">'left'</span>,on<span class="op">=</span>[<span class="st">'ffi48'</span>,<span class="st">'year'</span>])</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>comp5[<span class="st">'bm_adj'</span>] <span class="op">=</span> comp5[<span class="st">'bm'</span>]<span class="op">-</span>comp5[<span class="st">'bmavg'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next is to create the momentum factors for the industry groups.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Momentum Factor       #</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create (12,1) Momentum Factor with at least 6 months of returns</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>_tmp_crsp <span class="op">=</span> crsp_m[[<span class="st">'permno'</span>,<span class="st">'date'</span>,<span class="st">'ret'</span>, <span class="st">'me'</span>, <span class="st">'exchcd'</span>]].sort_values([<span class="st">'permno'</span>,<span class="st">'date'</span>]).set_index(<span class="st">'date'</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#replace missing return with 0</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>_tmp_crsp[<span class="st">'ret'</span>]<span class="op">=</span>_tmp_crsp[<span class="st">'ret'</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>_tmp_crsp[<span class="st">'logret'</span>]<span class="op">=</span>np.log(<span class="dv">1</span><span class="op">+</span>_tmp_crsp[<span class="st">'ret'</span>])</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>_tmp_cumret <span class="op">=</span> _tmp_crsp.groupby([<span class="st">'permno'</span>])[<span class="st">'logret'</span>].rolling(<span class="dv">12</span>, min_periods<span class="op">=</span><span class="dv">7</span>).<span class="bu">sum</span>()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>_tmp_cumret <span class="op">=</span> _tmp_cumret.reset_index()</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>_tmp_cumret[<span class="st">'cumret'</span>]<span class="op">=</span>np.exp(_tmp_cumret[<span class="st">'logret'</span>])<span class="op">-</span><span class="dv">1</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>sizemom <span class="op">=</span> pd.merge(_tmp_crsp.reset_index(), _tmp_cumret[[<span class="st">'permno'</span>,<span class="st">'date'</span>,<span class="st">'cumret'</span>]], how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span>[<span class="st">'permno'</span>,<span class="st">'date'</span>])</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>sizemom[<span class="st">'mom'</span>]<span class="op">=</span>sizemom.groupby(<span class="st">'permno'</span>)[<span class="st">'cumret'</span>].shift(<span class="dv">1</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>sizemom<span class="op">=</span>sizemom[sizemom[<span class="st">'date'</span>].dt.month<span class="op">==</span><span class="dv">6</span>].drop([<span class="st">'logret'</span>,<span class="st">'cumret'</span>], axis<span class="op">=</span><span class="dv">1</span>).rename(columns<span class="op">=</span>{<span class="st">'me'</span>:<span class="st">'size'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Third is to create size portfolios based on the NYSE stocks size breakpoints.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># NYSE Size Breakpoint  #</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get Size Breakpoints for NYSE firms</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>sizemom<span class="op">=</span>sizemom.sort_values([<span class="st">'date'</span>,<span class="st">'permno'</span>]).drop_duplicates()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>nyse <span class="op">=</span> sizemom[sizemom[<span class="st">'exchcd'</span>]<span class="op">==</span><span class="dv">1</span>]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>nyse_break <span class="op">=</span> nyse.groupby([<span class="st">'date'</span>])[<span class="st">'size'</span>].describe(percentiles<span class="op">=</span>[<span class="fl">.2</span>,<span class="fl">.4</span>,<span class="fl">.6</span>,<span class="fl">.8</span>]).reset_index()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>nyse_break <span class="op">=</span> nyse_break[[<span class="st">'date'</span>,<span class="st">'20%'</span>,<span class="st">'40%'</span>,<span class="st">'60%'</span>,<span class="st">'80%'</span>]]<span class="op">\</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>.rename(columns<span class="op">=</span>{<span class="st">'20%'</span>:<span class="st">'dec20'</span>, <span class="st">'40%'</span>:<span class="st">'dec40'</span>, <span class="st">'60%'</span>:<span class="st">'dec60'</span>,<span class="st">'80%'</span>:<span class="st">'dec80'</span>})</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>sizemom <span class="op">=</span> pd.merge(sizemom, nyse_break, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'date'</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Add NYSE Size Breakpoints to the Data</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> size_group(row):</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="dv">0</span><span class="op">&lt;=</span>row[<span class="st">'size'</span>] <span class="op">&lt;</span> row[<span class="st">'dec20'</span>]:</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        value <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> row[<span class="st">'size'</span>] <span class="op">&lt;</span> row[<span class="st">'dec40'</span>]:</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        value<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> row[<span class="st">'size'</span>] <span class="op">&lt;</span> row[<span class="st">'dec60'</span>]:</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        value<span class="op">=</span><span class="dv">3</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> row[<span class="st">'size'</span>] <span class="op">&lt;</span> row[<span class="st">'dec80'</span>]:</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        value<span class="op">=</span><span class="dv">4</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> row[<span class="st">'size'</span>] <span class="op">&gt;=</span> row[<span class="st">'dec80'</span>]:</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        value<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        value<span class="op">=</span>np.nan</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> value</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>sizemom[<span class="st">'group'</span>]<span class="op">=</span>sizemom.<span class="bu">apply</span>(size_group, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>sizemom[<span class="st">'year'</span>]<span class="op">=</span>sizemom[<span class="st">'date'</span>].dt.year<span class="op">-</span><span class="dv">1</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>sizemom<span class="op">=</span>sizemom[[<span class="st">'permno'</span>,<span class="st">'date'</span>,<span class="st">'year'</span>,<span class="st">'mom'</span>,<span class="st">'group'</span>,<span class="st">'size'</span>,<span class="st">'ret'</span>]]</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjusted BtM from the calendar year preceding the formation date</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>comp6<span class="op">=</span>comp5[[<span class="st">'gvkey'</span>,<span class="st">'permno'</span>,<span class="st">'year'</span>,<span class="st">'bm_adj'</span>]]</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>comp6<span class="op">=</span>pd.merge(comp6, sizemom, how<span class="op">=</span><span class="st">'inner'</span>, on<span class="op">=</span>[<span class="st">'permno'</span>,<span class="st">'year'</span>])</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>comp6<span class="op">=</span>comp6.dropna(subset<span class="op">=</span>[<span class="st">'size'</span>,<span class="st">'mom'</span>,<span class="st">'bm_adj'</span>,<span class="st">'ret'</span>], how<span class="op">=</span><span class="st">'any'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The final step involves calculating size, book-to-market, and momentum controlled value-weighted portfolio returns. I really wish Python can add a value-weighted option in the mean() function. How I miss SAS “proc means” statement’s weight=size capacity.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Size BM MOM Portfolio #</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#########################</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Start the Triple Sort on Size, Book-to-Market, and Momentum</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>port1<span class="op">=</span>comp6.sort_values([<span class="st">'date'</span>,<span class="st">'group'</span>,<span class="st">'permno'</span>]).drop_duplicates()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>port1[<span class="st">'bmr'</span>]<span class="op">=</span>port1.groupby([<span class="st">'date'</span>,<span class="st">'group'</span>])[<span class="st">'bm_adj'</span>].transform(<span class="kw">lambda</span> x: pd.qcut(x, <span class="dv">5</span>, labels<span class="op">=</span><span class="va">False</span>,duplicates<span class="op">=</span><span class="st">'drop'</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>port2 <span class="op">=</span> port1.sort_values([<span class="st">'date'</span>,<span class="st">'group'</span>,<span class="st">'bmr'</span>])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>port2[<span class="st">'momr'</span>]<span class="op">=</span>port2.groupby([<span class="st">'date'</span>,<span class="st">'group'</span>,<span class="st">'bmr'</span>])[<span class="st">'mom'</span>].transform(<span class="kw">lambda</span> x: pd.qcut(x, <span class="dv">5</span>, labels<span class="op">=</span><span class="va">False</span>,duplicates<span class="op">=</span><span class="st">'drop'</span>))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># DGTW_PORT 1 for Bottom Quintile, 5 for Top Quintile</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>port3<span class="op">=</span>port2</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>port3[<span class="st">'bmr'</span>]<span class="op">=</span>port3[<span class="st">'bmr'</span>]<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>port3[<span class="st">'momr'</span>]<span class="op">=</span>port3[<span class="st">'momr'</span>]<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>port3[[<span class="st">'group'</span>,<span class="st">'bmr'</span>,<span class="st">'momr'</span>]]<span class="op">=</span>port3[[<span class="st">'group'</span>,<span class="st">'bmr'</span>,<span class="st">'momr'</span>]].astype(<span class="bu">int</span>).astype(<span class="bu">str</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>port3[<span class="st">'dgtw_port'</span>]<span class="op">=</span>port3[<span class="st">'group'</span>]<span class="op">+</span>port3[<span class="st">'bmr'</span>]<span class="op">+</span>port3[<span class="st">'momr'</span>]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>port4 <span class="op">=</span> port3[[<span class="st">'permno'</span>,<span class="st">'gvkey'</span>,<span class="st">'date'</span>,<span class="st">'size'</span>,<span class="st">'mom'</span>,<span class="st">'bm_adj'</span>,<span class="st">'dgtw_port'</span>]]</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>port4[<span class="st">'date'</span>]<span class="op">=</span>port4[<span class="st">'date'</span>]<span class="op">+</span>MonthEnd(<span class="dv">0</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>port4[<span class="st">'jyear'</span>]<span class="op">=</span>port4[<span class="st">'date'</span>].dt.year</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>port4<span class="op">=</span>port4.sort_values([<span class="st">'permno'</span>,<span class="st">'date'</span>])</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>port4<span class="op">=</span>port4.rename(columns<span class="op">=</span>{<span class="st">'date'</span>:<span class="st">'formdate'</span>, <span class="st">'size'</span>:<span class="st">'sizew'</span>})</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>port4<span class="op">=</span>port4[[<span class="st">'permno'</span>,<span class="st">'formdate'</span>,<span class="st">'jyear'</span>,<span class="st">'sizew'</span>,<span class="st">'dgtw_port'</span>]]</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>crsp_m1<span class="op">=</span> crsp_m[[<span class="st">'permno'</span>,<span class="st">'date'</span>,<span class="st">'ret'</span>]]</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>crsp_m1[<span class="st">'date'</span>]<span class="op">=</span>crsp_m1[<span class="st">'date'</span>]<span class="op">+</span>MonthEnd(<span class="dv">0</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>crsp_m1[<span class="st">'jdate'</span>]<span class="op">=</span>crsp_m1[<span class="st">'date'</span>]<span class="op">+</span>MonthEnd(<span class="op">-</span><span class="dv">6</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>crsp_m1[<span class="st">'jyear'</span>]<span class="op">=</span>crsp_m1[<span class="st">'jdate'</span>].dt.year</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>crsp_m1 <span class="op">=</span> pd.merge(crsp_m1.drop([<span class="st">'jdate'</span>],axis<span class="op">=</span><span class="dv">1</span>), port4, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span>[<span class="st">'permno'</span>,<span class="st">'jyear'</span>])</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>crsp_m1 <span class="op">=</span> crsp_m1.dropna(subset<span class="op">=</span>[<span class="st">'formdate'</span>,<span class="st">'sizew'</span>,<span class="st">'dgtw_port'</span>], how<span class="op">=</span><span class="st">'any'</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>crsp_m1 <span class="op">=</span> crsp_m1.sort_values([<span class="st">'date'</span>,<span class="st">'dgtw_port'</span>,<span class="st">'permno'</span>])</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="co"># function to calculate value weighted return</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wavg(group, avg_name, weight_name):</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> group[avg_name]</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> group[weight_name]</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (d <span class="op">*</span> w).<span class="bu">sum</span>() <span class="op">/</span> w.<span class="bu">sum</span>()</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ZeroDivisionError</span>:</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.nan</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Weighted Average Returns    </span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>dgtw_vwret <span class="op">=</span> crsp_m1.groupby([<span class="st">'date'</span>,<span class="st">'dgtw_port'</span>]).<span class="bu">apply</span>(wavg, <span class="st">'ret'</span>,<span class="st">'sizew'</span>)</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>dgtw_vwret <span class="op">=</span> dgtw_vwret.reset_index().rename(columns<span class="op">=</span>{<span class="dv">0</span>:<span class="st">'dgtw_vwret'</span>})</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate DGTW Excess Return</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>dgtw_returns <span class="op">=</span> pd.merge(crsp_m1.drop([<span class="st">'sizew'</span>], axis<span class="op">=</span><span class="dv">1</span>), dgtw_vwret, how<span class="op">=</span><span class="st">'left'</span>, on <span class="op">=</span>[<span class="st">'dgtw_port'</span>,<span class="st">'date'</span>])</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>dgtw_returns[<span class="st">'dgtw_xret'</span>]<span class="op">=</span>dgtw_returns[<span class="st">'ret'</span>]<span class="op">-</span>dgtw_returns[<span class="st">'dgtw_vwret'</span>]</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>dgtw_returns <span class="op">=</span> dgtw_returns.sort_values([<span class="st">'permno'</span>,<span class="st">'date'</span>]).drop_duplicates()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For those of you who have already created your DGTW excess return using the sample SAS code available on WRDS website Research Application section, you may want to compare the output of this Python code to that. The correlation between the two dgtw_vwret series is 99.4%, with p-value equals 0.0.</p>
+<p>I also plot the time series of the corner portfolios below to provide a visual comparison between the two series. The DGTW portfolio is ordered by Size, Book-to-Market and Momentum. The blue solid line represents the value-weighted portfolio return from the Python output (dgtw_vwret), and the dash red line reports the result from the SAS output.</p>
+<p><img src="../images/data-crunching_dgtw/1.png" class="img-fluid"></p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.fredasongdrechsler\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../data-crunching/fama-french.html" class="pagination-link" aria-label="Fama–French 3-Factor">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Fama–French 3-Factor</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../data-crunching/iclink.html" class="pagination-link" aria-label="Linking IBES and CRSP">
+        <span class="nav-page-text">Linking IBES and CRSP</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2024 by Freda Song Drechsler. Please cite as: Drechsler, Qingyi (Freda) S., 2024, <em>Python Programs for Empirical Finance</em>, https://www.fredasongdrechsler.com</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
