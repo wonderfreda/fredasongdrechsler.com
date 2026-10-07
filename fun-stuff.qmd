@@ -1,0 +1,25 @@
+---
+title: "Fun Stuff"
+---
+
+**Interactive Online Appendix** ([link](http://wrds-10q-item.wrdscloud.com:8000/novelty_in_financial_research/)) of my paper:
+
+[Dissemination, Publication, and Impact of Finance Research: When Novelty Meets Conventionality](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3803654), with Rui Dai, Lawrence Donohue, and Wei Jiang
+
+**Connect4** code by my daughter. It's part of her summer python project.
+
+Option 1: Embedded using [repl.it](https://repl.it/).
+
+(May take a minute to initialize and update Python.)
+
+```{=html}
+<iframe height="600px" width="100%" src="https://repl.it/@FredaSong/FinishedRelievedDominspector?lite=true" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+```
+
+Option 2: Embedded using [create.withcode.uk](https://create.withcode.uk/)
+
+(please scroll to the bottom to run the code by clicking on the green button)
+
+```{=html}
+<iframe frameborder="0" width="100%" height="600px" src="https://create.withcode.uk/embed/BPi"><a target="_blank" href="https://create.withcode.uk/python/BPi">create.withcode.uk</a></iframe>
+```

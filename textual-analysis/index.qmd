@@ -1,0 +1,27 @@
+---
+title: "Textual Analysis"
+---
+
+Empirical finance and accounting research sometimes turns to unstructured data, such as companies' SEC filings, conference call transcript, online discussion board posts, in addition to the traditional structured data such as pricing, fundamental and earnings data from established data vendors. This section introduces basic textual analysis tools: accessing SEC filings, and showcasing a simple toy project for conducting basic textual analysis.
+
+Accessing SEC Filings on WRDS Server
+
+**Extracting Filing Name and Content**
+
+An introduction on how to find filing names using WRDS SEC tools for specific companies. This code also shows basic commands reading the content of actual 10-K filings.
+
+<div class="btn-row"><a class="primary" href="wrds-sec.html">WRDS SEC</a></div>
+
+Textual Analysis on S&P 500 Companies
+
+This is a toy project that conducts complete set of textual analysis using S&P500 companies business description as corpus. It tackles the following tasks:
+
+- Part 1: Build S&P500 Companies Constituents
+- Part 2: Read in Business Description from Compustat and CIQ
+- Part 3: Clean and Prepare Corpus
+- Part 4: Form Bag of Words
+- Part 5: Similarity Based on BOW
+- Part 6: Similarity Based on Doc2Vec
+- Part 7: Topic Classification using LDA
+
+<div class="btn-row"><a class="primary" href="textual-analysis-on-sp500-companies.html">Code</a></div>

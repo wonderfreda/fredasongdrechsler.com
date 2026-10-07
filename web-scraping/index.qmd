@@ -1,0 +1,15 @@
+---
+title: "Web Scraping"
+---
+
+While most of the time we rely on programing language for data related tasks, sometimes it also comes handy to scrape data from various sources using packages such as [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) or [Selenium](https://pypi.org/project/selenium/).
+
+In my own research projects, I learned to use Beautiful Soup to scrape down historical paper information at AFA or WFA annual meetings. Recently, I also tried to maneuver a different package Selenium to scrape historical significant short position from various European government sites.
+
+I don't claim to be expert on this field, but thought to share the code so that others can use these as a reference and stepping stone for their own project.
+
+**European Short Position Data**
+
+I used heavily Selenium in this project as there's plenty of "clicking" simulation required.
+
+<div class="btn-row"><a class="primary" href="european-short-position-data.html">Code</a></div>

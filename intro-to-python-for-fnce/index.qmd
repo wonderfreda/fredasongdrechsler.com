@@ -1,0 +1,33 @@
+---
+title: "Intro to Python for FNCE"
+---
+
+## About This Section
+
+If you are new to Python, whether a student trying to pick up a language for a project, or a seasoned researcher trying to expand from traditional programming languages (SAS, STATA), this page contains building blocks for running your first Python empirical project. We will cover two groups of exercises:
+
+- Maneuver WRDS Data Jungle
+- Basic Analytics Techniques in Python (Pandas and Numpy).
+
+## Maneuvering WRDS Data Jungle
+
+Most business schools that host the finance and accounting department have subscriptions to the Wharton Research Data Services (WRDS). Knowing how to connect to WRDS server and explore data on the server is step 0 towards any empirical research. In this section, we will explore the following tasks using Python (Spyder or Jupyter):
+
+- Establish connection (handshake with WRDS server)
+- Explore data (library and table, or in SAS language, library and dataset)
+- Query data (single source, multiple sources, with or without conditioning statements)
+- Store and output data (where did my result go?)
+
+<div class="btn-row"><a class="primary" href="maneuvering-wrds-data.html">WRDS Code</a></div>
+
+## Extracting S&P 500 index constituents
+
+How to extract historical S&P 500 Index constituents as well as their identifiers from CRSP and Compustat
+
+<div class="btn-row"><a class="primary" href="sp500-constituents.html">S&P500</a></div>
+
+## Exploring exchange rate related data on wrds
+
+Identify all exchange rate data sources on WRDS, including Compustat Global, Worldscope and Datastream
+
+<div class="btn-row"><a class="primary" href="exchange-rate.html">Exchange Rate</a></div>

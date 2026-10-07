@@ -1,0 +1,47 @@
+---
+title: "CV"
+---
+
+## Education
+
+<dl class="cv-list">
+<dt>2009</dt><dd>PhD, Applied Economics, Wharton School, University of Pennsylvania</dd>
+<dt>2007</dt><dd>MA, Applied Economics, Wharton School, University of Pennsylvania</dd>
+<dt>2004</dt><dd>BS, Actuarial Science, University of Hong Kong</dd>
+</dl>
+
+## Experience
+
+<dl class="cv-list">
+<dt>2012-Now</dt><dd>Wharton Research Data Services - Senior Research Director</dd>
+<dt>2012-2013</dt><dd>Wharton School, Business Economics and Public Policy Department - Lecturer</dd>
+<dt>2009-2011</dt><dd>Turner Investments - Portfolio Manager</dd>
+</dl>
+
+## Teaching and Research Fields
+
+Teaching:
+
+Insurance Risk Economics, Financial Data Analytics
+
+Research:
+
+Traditional data: Empirical Asset Pricing, Behavioral Finance, Corporate Capital Structure
+
+Textual analysis: Machine learning on financial corpus - LDA topic classification, Word2Vec/Doc2Vec application on SEC filings, conference call transcripts, etc.
+
+## Programming
+
+SAS (BASE and SQL), Python (Pandas, Scikit-Learn, Gensim, Matplotlib), STATA, Matlab
+
+## Contact
+
+qsong at wharton dot upenn dot edu
+
+[Wharton Research Data Services](http://www.whartonwrds.com/)
+
+3819 Chestnut Street Suite 300
+
+St. Leonard's Court
+
+Philadelphia PA 19104

@@ -1,0 +1,37 @@
+---
+title: "Data Crunching"
+---
+
+## Notes beforehand
+
+I am a traditional SAS programmer, and only recently started to develop these python codes in an effort to branch into this new popular programming language. These programs target some of the most fundamental topics in empirical asset pricing, and should serve as a stepping stone for those who are relatively new to the programming world of empirical finance. Of course, these python code probably could use some improvement in coding efficiency, and I welcome any suggestions on that front.
+
+If your institution is already a WRDS subscriber, you can find most of the codes below under the "Research Application" section of WRDS.
+
+## Data and platform setup
+
+These codes are written under the WRDS data platform, where relevant empirical data (pricing, fundamental, estimates, etc) are called upon directly through the WRDS API. If your institution has proper WRDS data subscription, you can run the code directly under your Python environment.
+
+## Python codes
+
+### Setting up sandbox
+
+<ul class="program-list">
+<li><a href="connect-wrds.html">Connecting to WRDS</a><span>With the WRDS API, it is very straightforward to connect to WRDS and extract data through Python.</span></li>
+</ul>
+
+### Market anomalies and risk factors
+
+<ul class="program-list">
+<li><a href="momentum.html">Momentum</a><span>Replicates the <a href="https://www.jstor.org/stable/2328882">Jegadeesh and Titman (1993)</a> momentum strategy, by buying the past winners and selling the past losers.</span></li>
+<li><a href="fama-french.html">Fama–French 3-Factor Model</a><span>This set of Python code replicates the <a href="https://www.sciencedirect.com/science/article/pii/0304405X93900235">Fama and French (1993)</a> risk factors SMB and HML, in addition to the excess market risk factor. It utilizes CRSP data for pricing related items and Compustat data for fundamental data.</span></li>
+<li><a href="dgtw.html">Characteristics-Based Benchmarks (DGTW)</a><span>This code is written to replicate the characteristics-based benchmarks proposed by <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1540-6261.1997.tb02724.x">Daniel, Grinblatt, Titman and Wermers (1997)</a>, hence the short form DGTW benchmarks.</span></li>
+<li><a href="iclink.html">Linking IBES and CRSP</a><span>Thomson Reuter's IBES database contains earnings and analyst forecasts related data, and researchers tend to link it with CRSP database for pricing related data to gauge market reaction to earnings related news. As these two databases do not have common native identifiers, this code aims to build a linkage between these two.</span></li>
+<li><a href="pead.html">Post-Earnings Announcement Drift</a><span>Based on the original paper of Ball and Brown (1968) and follow up paper by <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1475-679X.2006.00196.x">Livnat and Mendenhall (2006)</a>, this code calculates the earnings surprises (SUE) relative to analysts' forecast, and reports the portfolio returns formed based on the SUE.</span></li>
+</ul>
+
+### Institutional ownership
+
+<ul class="program-list">
+<li><a href="io_breadth.html">Ownership Breadth</a><span><a href="https://www.sciencedirect.com/science/article/pii/S0304405X02002234">Chen, Hong and Stein (2002)</a> studies the relationship between institutional ownership breadth and underlying stock returns. This set of code replicates this exercise using Thomson Reuters 13F data.</span></li>
+</ul>

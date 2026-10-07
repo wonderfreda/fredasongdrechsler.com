@@ -1,0 +1,77 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Freda Song Drechsler"
+  site-url: https://www.fredasongdrechsler.com
+  page-navigation: true
+  navbar:
+    left:
+      - text: CV
+        href: cv.qmd
+      - text: Intro to Python for FNCE
+        href: intro-to-python-for-fnce/index.qmd
+      - text: Data Crunching
+        href: data-crunching/index.qmd
+      - text: Textual Analysis
+        href: textual-analysis/index.qmd
+      - text: Web Scraping
+        href: web-scraping/index.qmd
+      - text: Fun Stuff
+        href: fun-stuff.qmd
+  sidebar:
+    - title: Intro to Python for FNCE
+      style: floating
+      contents:
+        - intro-to-python-for-fnce/index.qmd
+        - intro-to-python-for-fnce/maneuvering-wrds-data.qmd
+        - intro-to-python-for-fnce/sp500-constituents.qmd
+        - intro-to-python-for-fnce/exchange-rate.qmd
+    - title: Textual Analysis
+      style: floating
+      contents:
+        - textual-analysis/index.qmd
+        - textual-analysis/wrds-sec.qmd
+        - textual-analysis/textual-analysis-on-sp500-companies.qmd
+    - title: Web Scraping
+      style: floating
+      contents:
+        - web-scraping/index.qmd
+        - web-scraping/european-short-position-data.qmd
+    - title: Data Crunching
+      style: floating
+      contents:
+        - data-crunching/index.qmd
+        - section: Setting up
+          contents:
+            - text: Connecting to WRDS
+              href: data-crunching/connect-wrds.qmd
+        - section: Anomalies & risk factors
+          contents:
+            - data-crunching/momentum.qmd
+            - text: Fama–French 3-Factor
+              href: data-crunching/fama-french.qmd
+            - text: DGTW Benchmarks
+              href: data-crunching/dgtw.qmd
+            - text: Linking IBES and CRSP
+              href: data-crunching/iclink.qmd
+            - text: Post-Earnings Announcement Drift
+              href: data-crunching/pead.qmd
+        - section: Institutional ownership
+          contents:
+            - text: Ownership Breadth
+              href: data-crunching/io_breadth.qmd
+  page-footer:
+    left: |
+      © 2024 by Freda Song Drechsler. Please cite as: Drechsler, Qingyi (Freda) S., 2024,
+      *Python Programs for Empirical Finance*, https://www.fredasongdrechsler.com
+
+format:
+  html:
+    theme: [cosmo, styles.scss]
+    toc: true
+    toc-depth: 2
+    code-copy: true
+    highlight-style: github
+    smooth-scroll: true

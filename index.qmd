@@ -1,0 +1,29 @@
+---
+title: "Python Programs for Empirical Finance"
+toc: false
+page-layout: article
+---
+
+::: {.home-grid}
+![](images/freda.jpg){fig-alt="Freda Song Drechsler"}
+
+::: {}
+### Qingyi (Freda) Song Drechsler 宋清逸 {.unnumbered}
+
+I am a research director at Wharton Research Data Services.
+
+My primary research focus is on empirical asset pricing and behavioral finance, including asset pricing anomalies and short selling. I received my PhD and MA degree in Applied Economics from the Wharton School of the University of Pennsylvania, and Bachelor degree from University of Hong Kong after transferring from Tsinghua University in Beijing.
+
+[CV](cv.qmd) · [GitHub](https://github.com/wonderfreda)
+:::
+:::
+
+## Programs
+
+<ul class="program-list">
+<li><a href="intro-to-python-for-fnce/index.html">Intro to Python for FNCE</a><span>Building blocks for running your first Python empirical project: maneuvering WRDS data, and basic analytics in pandas and NumPy.</span></li>
+<li><a href="data-crunching/index.html">Data Crunching</a><span>Replications of fundamental topics in empirical asset pricing: momentum, Fama–French factors, DGTW benchmarks, IBES–CRSP linking, PEAD, institutional ownership.</span></li>
+<li><a href="textual-analysis/index.html">Textual Analysis</a><span>Accessing SEC filings on WRDS, and a simple textual analysis of S&amp;P 500 companies.</span></li>
+<li><a href="web-scraping/index.html">Web Scraping</a><span>Scraping European significant short position disclosures with Selenium.</span></li>
+<li><a href="fun-stuff.html">Fun Stuff</a><span>An interactive online appendix, and a Connect4 game.</span></li>
+</ul>

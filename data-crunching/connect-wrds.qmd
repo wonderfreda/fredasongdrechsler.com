@@ -1,0 +1,134 @@
+---
+title: "Connecting to WRDS"
+---
+
+This set of documentation demonstrates how to connect to WRDS server for data extraction. If your institution is a WRDS subscriber, you can log in using your usual username and password once prompted in the Python code.
+
+**0. Setting Up**
+
+Preparation - Install WRDS Python Module
+
+“All WRDS data is stored in a PostgreSQL database, and is available through Python through our in-house Python module, wrds, which is freely available on PyPI via a pip install.”
+
+[https://pypi.org/project/wrds/](https://pypi.org/project/wrds/)
+
+Once you have the module installed, you can then use any of the common Python programming interface (Spyder, Jupyter Notebook, JupyterLab, etc).
+
+**1. Connecting to WRDS**
+
+**1.1 Establish Connection**
+
+```python
+import wrds
+conn = wrds.Connection(wrds_username='')
+```
+
+**1.2 Functions - List Libraries**
+
+Depending on your institution's data subscription, you will see a list of all data libraries available to you.
+
+```python
+conn.list_libraries()
+```
+
+**1.3 Functions - List Tables Within a Library**
+
+This command will list all the datasets that is available under the [CRSP database](http://www.crsp.com/), which researchers often refer to for pricing related data.
+
+```python
+conn.list_tables(library='crsp')
+```
+
+**1.4 Explore a Given Table**
+
+This command returns a summary table of the "stocknames" dataset under the "crsp" database. This is similar to "proc content" command in SAS. If you are not already familiar with what is inside a particular dataset, this command is a good way to get a quick overview.
+
+```python
+conn.describe_table(library='crsp', table='stocknames')
+```
+
+**2. Calling Data**
+
+There are various ways to extract data through the WRDS API. The basic method is good for extracting data from one single dataset, while the sql based method is more flexible in joining multiple data sources and imposing conditioning statements.
+
+**2.1 Basic Method**
+
+The command lines extract first 1000 observations from the table "stocknames" under "crsp" library.
+
+```python
+# get_table function - calling data from single table
+stocknames = conn.get_table(library='crsp', table='stocknames', obs=1000)
+```
+
+This is equivalent to the SAS lines:
+
+```python
+data stocknames;
+set crsp.stocknames (obs=1000);
+run;
+```
+
+**2.2 Advanced Method**
+
+raw_sql function gives users more flexibility in extracting, joining, filtering data.
+
+**Example 1**: calling data while imposing conditioning statement:
+
+```python
+crsp_m = conn.raw_sql("""
+                      select a.permno, a.date, a.ret, a.vol, a.shrout, a.prc, a.cfacpr, a.cfacshr
+                      from crsp.msf as a
+                      where a.date between '01/01/2010' and '12/31/2017'and a.permno = 14593
+                      """) # Apple msf data from 2010 to 2017
+```
+
+**Example 2**: calling data from more than one data source while imposing conditional statement
+
+If you are already an experienced "proc sql" user under SAS, then these advanced data extraction lines should look fairly intuitive to you. Just keep in mind the subtle difference in the date formats accepted here.
+
+```python
+crsp_m = conn.raw_sql("""
+                      select a.permno, b.ncusip, b.ticker, a.date, b.shrcd, b.exchcd, b.siccd,
+                      a.ret, a.vol, a.shrout, a.prc, a.cfacpr, a.cfacshr
+                      from crsp.msf as a
+                      left join crsp.msenames as b
+                      on a.permno=b.permno
+                      and b.namedt<=a.date
+                      and a.date<=b.nameendt
+                      where a.date between '01/01/2010' and '12/31/2017'
+                      and b.shrcd between 10 and 11
+                      and a.permno=14593
+                      """) # Apple msf + mse data from 2010 to 2017
+```
+
+**3. Storing Output**
+
+Last but not least, when the program is done running and outputs need to be stored, there are several options.
+
+**3.1 Native "Pickle"**
+
+The Python native "pickle" package is versatile for storing and retrieving data. The code below stores the data "crsp_m" extracted from the raw_sql method above into a file "aapl.pkl".
+
+```python
+import pickle as pkl
+with open ("aapl.pkl", "wb") as f:  
+    pkl.dump(crsp_m, f)
+```
+
+When the data is needed in other programs, one can easily retrieve it by using the following command lines. The content of the data is now loaded as data frame "aapl_msf".
+
+```python
+with open("aapl.pkl", "rb") as f:
+    aapl_msf = pkl.load(f)
+```
+
+**3.2 Flat Files**
+
+If you would like to port the output to other programming languages for further data crunching, you can store it using the lines below:
+
+```python
+aapl_msf.to_csv(r'your path\aapl_msf.csv') #csv
+aapl_msf.to_excel(r'your path\aapl_msf.xlsx') #excel
+```
+
+There are various other packages that can enable data storage in other formats, for instance, SASPy.
