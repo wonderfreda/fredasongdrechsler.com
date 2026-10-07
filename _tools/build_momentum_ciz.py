@@ -14,7 +14,7 @@ Python version of the WRDS research application *Momentum Strategies (CIZ format
 from the CRSP Monthly Stock File in the new CIZ format (`msf_v2`). The sample is NYSE and AMEX common
 stocks; portfolios are formed on past J-month returns and held for K months.
 
-The sample runs through June 2026, using the CRSP quarterly update on WRDS (`crsp_q_stock`); the annual
+The sample runs through June 2026, using the CRSP monthly update on WRDS (`crsp_m_stock`); the annual
 release in the `crsp` library ends in December 2025. The original 1965–1989 holding period is kept as a subsample to check the results against Jegadeesh and
 Titman (1993) and the WRDS SAS code."""),
 
@@ -49,9 +49,9 @@ K = 6 # Holding Period Length: K can be between 3 to 12 months
 begdate = '01/01/1963'
 enddate = '06/30/2026'
 
-# CRSP quarterly update: the annual library (crsp) ends December 2025,
-# the quarterly update (crsp_q_stock) runs through June 2026
-crsp_lib = 'crsp_q_stock'"""),
+# CRSP monthly update: the annual library (crsp) ends December 2025,
+# the monthly update (crsp_m_stock) covers the sample through June 2026
+crsp_lib = 'crsp_m_stock'"""),
 
 md("""## CRSP data
 

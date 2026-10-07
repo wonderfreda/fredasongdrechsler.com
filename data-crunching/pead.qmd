@@ -8,7 +8,7 @@ This program is designed to calculate earnings surprises (SUE) and form portfoli
 
 **Notes before attempting the code**
 
-This code relies on a linking table before IBES and CRSP (ICLINK), which is invoked in Step 0. The static table "iclink.pkl" was the output of a separate python program ICLINK. Please make sure to run the[ICLINK python code](iclink.qmd) before running this PEAD code.
+This code relies on a linking table before IBES and CRSP (ICLINK), which is invoked in Step 0. The static table "iclink.pkl" was the output of a separate python program ICLINK. Please make sure to run the[ICLINK python code](iclink.ipynb) before running this PEAD code.
 
 Unlike SAS, Python is not known for handling large dataset efficiently in memory. As a result of this constraint, one might not be able to run the entire sample period (1980-now) in python one shot. Instead, you can break up the sample period into batches by changing start and end date (begdate and enddate) of the program, before finally piecing the outputs together.
 

@@ -61,7 +61,7 @@ website:
             - text: DGTW Benchmarks
               href: data-crunching/dgtw.qmd
             - text: Linking IBES and CRSP
-              href: data-crunching/iclink.qmd
+              href: data-crunching/iclink.ipynb
             - text: Post-Earnings Announcement Drift
               href: data-crunching/pead.qmd
         - section: Institutional ownership

@@ -27,7 +27,6 @@ PAGES = {
     "intro-to-python-for-fnce/exchange-rate": "intro-to-python-for-fnce/exchange-rate.qmd",
     "data-crunching/connect-wrds": "data-crunching/connect-wrds.qmd",
     "data-crunching/dgtw": "data-crunching/dgtw.qmd",
-    "data-crunching/iclink": "data-crunching/iclink.qmd",
     "data-crunching/pead": "data-crunching/pead.qmd",
     "data-crunching/io_breadth": "data-crunching/io_breadth.qmd",
     "textual-analysis": "textual-analysis/index.qmd",
@@ -49,7 +48,8 @@ TITLES = {
 ALL_TARGETS = {**PAGES, "cv": "cv.qmd", "home": "index.qmd", "": "index.qmd",
                "data-crunching": "data-crunching/index.qmd",
                "data-crunching/momentum": "data-crunching/momentum.ipynb",
-               "data-crunching/fama-french": "data-crunching/fama-french.ipynb"}
+               "data-crunching/fama-french": "data-crunching/fama-french.ipynb",
+               "data-crunching/iclink": "data-crunching/iclink.ipynb"}
 
 BLOCK = re.compile(
     r'data-code="(?P<code>[^"]*)"'

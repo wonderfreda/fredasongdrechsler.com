@@ -3,8 +3,8 @@
 
 The code is kept as written, with only these changes:
   - cell 0: plotly imports, so the comparison charts match the Momentum page; "Updated" date
-  - cells 6, 18: sample extended to June 2026 from the CRSP quarterly update
-                 (crsp_q_stock.msf_v2, crsp_q_ccm.ccmxpf_linktable)
+  - cells 6, 18: sample extended to June 2026 from the CRSP monthly update
+                 (crsp_m_stock.msf_v2, crsp_m_ccm.ccmxpf_linktable)
   - cell 23: `.copy()` on the June slice (silences pandas SettingWithCopyWarning)
   - cell 27: cast ff.factors_monthly smb/hml to float (WRDS now returns them as Decimal,
              which breaks stats.pearsonr)
@@ -31,14 +31,14 @@ replace(0, "import matplotlib.pyplot as plt\n",
         "import matplotlib.pyplot as plt\nimport plotly.graph_objects as go\nimport plotly.io as pio\n"
         "from plotly.subplots import make_subplots\n")
 replace(0, "from scipy import stats", "from scipy import stats\n\npio.renderers.default = 'notebook_connected'")
-# Sample extended to June 2026: CRSP quarterly update (the annual crsp library ends December 2025)
+# Sample extended to June 2026: CRSP monthly update (the annual crsp library ends December 2025)
 replace(6, "# sql similar to crspmerge macro\n",
         "# sql similar to crspmerge macro\n"
-        "# CRSP quarterly update (crsp_q_stock) runs through June 2026; the annual crsp library ends December 2025\n")
-replace(6, "from crsp.msf_v2 as a", "from crsp_q_stock.msf_v2 as a")
+        "# CRSP monthly update (crsp_m_stock) covers the sample through June 2026; the annual crsp library ends December 2025\n")
+replace(6, "from crsp.msf_v2 as a", "from crsp_m_stock.msf_v2 as a")
 replace(6, "where a.mthcaldt between '01/01/1959' and '12/31/2022'",
         "where a.mthcaldt between '01/01/1959' and '06/30/2026'")
-replace(18, "from crsp.ccmxpf_linktable", "from crsp_q_ccm.ccmxpf_linktable")
+replace(18, "from crsp.ccmxpf_linktable", "from crsp_m_ccm.ccmxpf_linktable")
 replace(0, "# Updated:                               #", "# Updated: October 2026                  #")
 replace(23, "june=ccm1_jun[['permno','mthcaldt', 'jdate', 'bmport','szport','posbm','nonmissport']]",
         "june=ccm1_jun[['permno','mthcaldt', 'jdate', 'bmport','szport','posbm','nonmissport']].copy()")

@@ -37,6 +37,24 @@ PAGES = {
         ],
         intro="This set of Python code replicates the Fama French risk factors SMB and HML, in addition to the excess market risk factor. It utilizes CRSP data for pricing related items and Compustat data for fundamental data.",
     ),
+    "iclink": dict(
+        src="notebooks/iclink_ciz.ipynb",
+        dest="data-crunching/iclink.ipynb",
+        title="Linking IBES and CRSP (ICLINK)",
+        subtitle="IBES TICKER to CRSP PERMNO link table",
+        meta=[
+            ("Source", 'WRDS SAS macro <a href="https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-iclink-ciz/">ICLINK (CIZ format)</a>'),
+            ("Data", 'IBES identifier file <code>ibes.id</code>; CRSP names file <code>stocknames_v2</code> <span class="tag ciz">CIZ format</span>'),
+            ("Output", "IBES TICKER–CRSP PERMNO links, scored from 0 (best) to 6"),
+            ("Author", "Qingyi (Freda) Song Drechsler"),
+        ],
+        intro="""This Python code builds a linkage between IBES data (containing information on company earnings and analysts forecasts) and CRSP data (containing price and return information). It builds the linkage in two layers:
+
+- linking through CUSIPs
+- linking through Tickers
+
+As CUSIPs are more reliable company identifiers, we first try to match as much as possible through it. For the remaining ones that are not matched through CUSIP, we turn to TICKER as last resort. To impose additional layer of quality check, I add a company name matching layer on top of matching through CUSIPs and TICKERs. Name matching is done through FuzzyWuzzy package, but there can be many other fuzzy name matching methods.""",
+    ),
 }
 
 
