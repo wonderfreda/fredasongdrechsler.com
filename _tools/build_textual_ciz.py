@@ -259,6 +259,9 @@ TEXT_EDITS = [
     ("(e.g. GM vs F and or C vs JPM)", "(e.g. GM vs F and or V vs MA)"),
     ("(e.g. FB vs RMD or AMZN vs ATVI)", "(e.g. FB vs TWTR or AMZN vs ADBE)"),
     ("(e.g. ABT vs BDX, NCLH vs CCL, UAL vs AAL, WMT vs BBY)", "(e.g. ABT vs BDX, GM vs F, NCLH vs CCL, V vs MA)"),
+    # LDA section was never written ("to be continued"); removed at the user's request
+    ("- Similarity Based on Doc2Vec\n- Topic Classification using LDA", "- Similarity Based on Doc2Vec"),
+    ("## part 7: topic classification using lda\n\nto be continued...", ""),
 ]
 for o, _ in TEXT_EDITS:
     assert o in body, o
