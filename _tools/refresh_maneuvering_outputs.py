@@ -16,7 +16,7 @@ import wrds
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, "intro-to-python-for-fnce", "maneuvering-wrds-data.qmd")
-TEXT_COLS = {"conm"}   # names read better left-aligned
+TEXT_COLS = {"conm", "issuernm"}   # names read better left-aligned
 
 
 def table(df, formats=None):

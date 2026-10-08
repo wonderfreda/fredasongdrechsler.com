@@ -74,3 +74,5 @@ pre.text { background: transparent; border: none;
 .output-table th, .output-table td { padding: .3rem .45rem; }
 .output-table thead th { font-weight: 600; color: #4a4a46; }
 .output-table tbody td:first-child { color: #8a8984; }
+.output-table.wide table { font-size: .72rem; }
+.output-table.wide th, .output-table.wide td { padding: .3rem .4rem; }
