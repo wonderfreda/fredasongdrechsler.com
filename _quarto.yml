@@ -65,7 +65,7 @@ website:
             - text: Linking IBES and CRSP
               href: data-crunching/iclink.ipynb
             - text: Post-Earnings Announcement Drift
-              href: data-crunching/pead.qmd
+              href: data-crunching/pead.ipynb
         - section: Institutional ownership
           contents:
             - text: Ownership Breadth

@@ -70,6 +70,19 @@ As CUSIPs are more reliable company identifiers, we first try to match as much a
         ],
         intro="",
     ),
+    "pead": dict(
+        src="notebooks/pead_ciz.ipynb",
+        dest="data-crunching/pead.ipynb",
+        title="Post-Earnings Announcement Drift",
+        subtitle="Livnat and Mendenhall (2006)",
+        meta=[
+            ("Paper", '<a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1475-679X.2006.00196.x">Livnat, J. and R. Mendenhall (2006), Comparing the Post-Earnings Announcement Drift for Surprises Calculated from Analyst and Time Series Forecasts, <em>Journal of Accounting Research</em></a>'),
+            ("Data", 'CRSP daily stock file <code>dsf_v2</code>, daily market index and S&P 500 list <code>msp500list_v2</code> <span class="tag ciz">CIZ format</span>; IBES estimates and actuals; Compustat quarterly fundamentals'),
+            ("Sample", "S&P 500 members, fiscal quarters January 2010 to June 2026"),
+            ("Author", "Qingyi (Freda) Song Drechsler"),
+        ],
+        intro="",
+    ),
 }
 
 
