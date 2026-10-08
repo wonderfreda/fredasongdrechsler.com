@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-65442d70271d454a29f3353a9a9c231f.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ebb60c0fa441bc42bd3c5f23da1a0ff8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4038e6af9fb4d6747a3f585765766153.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -212,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -241,55 +241,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">##########################################</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># S&amp;P 500 Index Constituents             #</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Qingyi (Freda) Song Drechsler          #</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Date: October 2020                     #</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">##########################################</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> wrds</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to WRDS #</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># CRSP CIZ Format                        #</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Qingyi (Freda) Song Drechsler          #</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Date: October 2020                     #</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Updated: October 2026                  #</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">##########################################</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> wrds</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>conn<span class="op">=</span>wrds.Connection()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to WRDS #</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">###################</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>conn<span class="op">=</span>wrds.Connection()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="get-sp-500-index-membership-from-crsp" class="level3">
 <h3 class="anchored" data-anchor-id="get-sp-500-index-membership-from-crsp">2. Get S&amp;P 500 Index Membership from CRSP</h3>
 <ul>
-<li>I opt for the monthly frequency of the data, but one can choose to work with crsp.dsp500list if more precise date range is needed.</li>
+<li>I opt for the monthly frequency of the data (crsp.msp500list_v2), but one can choose to work with crsp.dsp500list_v2 if more precise date range is needed.</li>
+<li>Monthly returns come from the CRSP monthly stock file in the new CIZ format (msf_v2).</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sp500 <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">                        select a.*, b.date, b.ret</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">                        from crsp.msp500list as a,</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">                        crsp.msf as b</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">                        where a.permno=b.permno</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">                        and b.date &gt;= a.start and b.date&lt;= a.ending</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">                        and b.date&gt;='01/01/2000'</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">                        order by date;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">                        """</span>, date_cols<span class="op">=</span>[<span class="st">'start'</span>, <span class="st">'ending'</span>, <span class="st">'date'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">    select distinct a.permno, a.mbrstartdt, a.mbrenddt,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">           b.mthcaldt, b.mthret</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">    from crsp_m_indexes.msp500list_v2 as a,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">         crsp_m_stock.msf_v2 as b</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">    where a.permno=b.permno</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">    and b.mthcaldt &gt;= a.mbrstartdt and b.mthcaldt &lt;= a.mbrenddt</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">    and b.mthcaldt between '01/01/2000' and '06/30/2026'</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">    order by b.mthcaldt, a.permno</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>, date_cols<span class="op">=</span>[<span class="st">'mbrstartdt'</span>, <span class="st">'mbrenddt'</span>, <span class="st">'mthcaldt'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="add-other-company-identifiers-from-crsp.msenames" class="level3">
-<h3 class="anchored" data-anchor-id="add-other-company-identifiers-from-crsp.msenames">3. Add Other Company Identifiers from crsp.msenames</h3>
+<section id="add-other-company-identifiers-from-crsp.stksecurityinfohist" class="level3">
+<h3 class="anchored" data-anchor-id="add-other-company-identifiers-from-crsp.stksecurityinfohist">3. Add Other Company Identifiers from crsp.stksecurityinfohist</h3>
 <ul>
 <li>You don’t need this step if only PERMNO is required</li>
-<li>This step aims to add TICKER, SHRCD, EXCHCD and etc.</li>
+<li>This step aims to add TICKER, CUSIP, company name, share type, primary exchange, SIC code and etc.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Other Descriptive Variables</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">                        select comnam, ncusip, namedt, nameendt, </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">                        permno, shrcd, exchcd, hsiccd, ticker</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">                        from crsp.msenames</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">                        """</span>, date_cols<span class="op">=</span>[<span class="st">'namedt'</span>, <span class="st">'nameendt'</span>])</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># if nameendt is missing then set to today date</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>mse[<span class="st">'nameendt'</span>]<span class="op">=</span>mse[<span class="st">'nameendt'</span>].fillna(pd.to_datetime(<span class="st">'today'</span>))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge with SP500 data</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>sp500_full <span class="op">=</span> pd.merge(sp500, mse, how <span class="op">=</span> <span class="st">'left'</span>, on <span class="op">=</span> <span class="st">'permno'</span>)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Impose the date range restrictions</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>sp500_full <span class="op">=</span> sp500_full.loc[(sp500_full.date<span class="op">&gt;=</span>sp500_full.namedt) <span class="op">\</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                            <span class="op">&amp;</span> (sp500_full.date<span class="op">&lt;=</span>sp500_full.nameendt)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>stkinfo <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">    select distinct permno, issuernm, cusip, ticker,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">           sharetype, securitytype, securitysubtype,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">           primaryexch, siccd, secinfostartdt, secinfoenddt</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">    from crsp_m_stock.stksecurityinfohist</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>, date_cols<span class="op">=</span>[<span class="st">'secinfostartdt'</span>, <span class="st">'secinfoenddt'</span>])</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge with SP500 data</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>sp500_full <span class="op">=</span> pd.merge(sp500, stkinfo, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'permno'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Impose the date range restrictions</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>sp500_full <span class="op">=</span> sp500_full.loc[</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    (sp500_full.mthcaldt <span class="op">&gt;=</span> sp500_full.secinfostartdt)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> (sp500_full.mthcaldt <span class="op">&lt;=</span> sp500_full.secinfoenddt)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="add-compustat-identifiers" class="level3">
 <h3 class="anchored" data-anchor-id="add-compustat-identifiers">4. Add Compustat Identifiers</h3>
@@ -300,12 +303,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Linking with Compustat through CCM</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ccm<span class="op">=</span>conn.raw_sql(<span class="st">"""</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">                  select gvkey, liid as iid, lpermno as permno, linktype, linkprim, </span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">                  linkdt, linkenddt</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">                  from crsp.ccmxpf_linktable</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">                  where substr(linktype,1,1)='L'</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">                  and (linkprim ='C' or linkprim='P')</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">                  """</span>, date_cols<span class="op">=</span>[<span class="st">'linkdt'</span>, <span class="st">'linkenddt'</span>])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">    select distinct gvkey, liid as iid, lpermno as permno,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">           linktype, linkprim, linkdt, linkenddt</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">    from crsp_m_ccm.ccmxpf_linktable</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">    where substr(linktype,1,1)='L'</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">    and (linkprim ='C' or linkprim='P')</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>, date_cols<span class="op">=</span>[<span class="st">'linkdt'</span>, <span class="st">'linkenddt'</span>])</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># if linkenddt is missing then set to today date</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ccm[<span class="st">'linkenddt'</span>]<span class="op">=</span>ccm[<span class="st">'linkenddt'</span>].fillna(pd.to_datetime(<span class="st">'today'</span>))</span>
@@ -315,19 +318,221 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>sp500ccm <span class="op">=</span> pd.merge(sp500_full, ccm, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span>[<span class="st">'permno'</span>])</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Then set link date bounds</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>sp500ccm <span class="op">=</span> sp500ccm.loc[(sp500ccm[<span class="st">'date'</span>]<span class="op">&gt;=</span>sp500ccm[<span class="st">'linkdt'</span>])<span class="op">\</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                        <span class="op">&amp;</span>(sp500ccm[<span class="st">'date'</span>]<span class="op">&lt;=</span>sp500ccm[<span class="st">'linkenddt'</span>])]</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>sp500ccm <span class="op">=</span> sp500ccm.loc[(sp500ccm[<span class="st">'mthcaldt'</span>]<span class="op">&gt;=</span>sp500ccm[<span class="st">'linkdt'</span>])<span class="op">\</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                        <span class="op">&amp;</span>(sp500ccm[<span class="st">'mthcaldt'</span>]<span class="op">&lt;=</span>sp500ccm[<span class="st">'linkenddt'</span>])]</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Rearrange columns for final output</span></span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>sp500ccm <span class="op">=</span> sp500ccm.drop(columns<span class="op">=</span>[<span class="st">'namedt'</span>, <span class="st">'nameendt'</span>, <span class="op">\</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">'linktype'</span>, <span class="st">'linkprim'</span>, <span class="st">'linkdt'</span>, <span class="st">'linkenddt'</span>])</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>sp500ccm <span class="op">=</span> sp500ccm[[<span class="st">'date'</span>, <span class="st">'permno'</span>, <span class="st">'comnam'</span>, <span class="st">'ncusip'</span>, <span class="st">'shrcd'</span>, <span class="st">'exchcd'</span>, <span class="st">'hsiccd'</span>, <span class="st">'ticker'</span>, <span class="op">\</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'gvkey'</span>, <span class="st">'iid'</span>, <span class="st">'start'</span>, <span class="st">'ending'</span>, <span class="st">'ret'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>sp500ccm <span class="op">=</span> sp500ccm[[<span class="st">'mthcaldt'</span>, <span class="st">'permno'</span>, <span class="st">'issuernm'</span>, <span class="st">'cusip'</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'ticker'</span>, <span class="st">'sharetype'</span>, <span class="st">'primaryexch'</span>, <span class="st">'siccd'</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'gvkey'</span>, <span class="st">'iid'</span>, <span class="st">'mbrstartdt'</span>, <span class="st">'mbrenddt'</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'mthret'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="sample-output-from-the-final-data-frame" class="level3">
+<section id="sample-output-from-the-final-data-frame" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="sample-output-from-the-final-data-frame">Sample output from the final data frame:</h3>
-<p><img src="../images/intro-to-python-for-fnce_sp500-constituents/1.png" class="img-fluid"></p>
+<!-- output:sp500ccm -->
+<p>10 randomly drawn rows of the 159,142 in sp500ccm (Jan 2000–Jun 2026):</p>
+<div class="output-table wide column-page">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 16%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: right;">mthcaldt</th>
+<th style="text-align: right;">permno</th>
+<th style="text-align: left;">issuernm</th>
+<th style="text-align: right;">cusip</th>
+<th style="text-align: right;">ticker</th>
+<th style="text-align: right;">sharetype</th>
+<th style="text-align: right;">primaryexch</th>
+<th style="text-align: right;">siccd</th>
+<th style="text-align: right;">gvkey</th>
+<th style="text-align: right;">iid</th>
+<th style="text-align: right;">mbrstartdt</th>
+<th style="text-align: right;">mbrenddt</th>
+<th style="text-align: right;">mthret</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2000-08-31</td>
+<td style="text-align: right;">41443</td>
+<td style="text-align: left;">ALLTEL CORP</td>
+<td style="text-align: right;">02003910</td>
+<td style="text-align: right;">AT</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">N</td>
+<td style="text-align: right;">6711</td>
+<td style="text-align: right;">001318</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">1994-12-21</td>
+<td style="text-align: right;">2007-11-16</td>
+<td style="text-align: right;">-0.179513</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2007-01-31</td>
+<td style="text-align: right;">86356</td>
+<td style="text-align: left;">EBAY INC</td>
+<td style="text-align: right;">27864210</td>
+<td style="text-align: right;">EBAY</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">Q</td>
+<td style="text-align: right;">7380</td>
+<td style="text-align: right;">114524</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2002-07-22</td>
+<td style="text-align: right;">2026-08-31</td>
+<td style="text-align: right;">0.077153</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2008-11-28</td>
+<td style="text-align: right;">86176</td>
+<td style="text-align: left;">KING PHARMACEUTICALS INC</td>
+<td style="text-align: right;">49558210</td>
+<td style="text-align: right;">KG</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">N</td>
+<td style="text-align: right;">2834</td>
+<td style="text-align: right;">112033</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2000-10-03</td>
+<td style="text-align: right;">2010-12-17</td>
+<td style="text-align: right;">0.093288</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2009-11-30</td>
+<td style="text-align: right;">46886</td>
+<td style="text-align: left;">K L A TENCOR CORP</td>
+<td style="text-align: right;">48248010</td>
+<td style="text-align: right;">KLAC</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">Q</td>
+<td style="text-align: right;">3827</td>
+<td style="text-align: right;">006304</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">1997-09-15</td>
+<td style="text-align: right;">2026-08-31</td>
+<td style="text-align: right;">-0.034694</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2016-01-29</td>
+<td style="text-align: right;">82642</td>
+<td style="text-align: left;">LAUDER ESTEE COS INC</td>
+<td style="text-align: right;">51843910</td>
+<td style="text-align: right;">EL</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">N</td>
+<td style="text-align: right;">2844</td>
+<td style="text-align: right;">061567</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2006-01-05</td>
+<td style="text-align: right;">2026-08-31</td>
+<td style="text-align: right;">-0.031910</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2016-09-30</td>
+<td style="text-align: right;">14702</td>
+<td style="text-align: left;">APPLIED MATERIALS INC</td>
+<td style="text-align: right;">03822210</td>
+<td style="text-align: right;">AMAT</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">Q</td>
+<td style="text-align: right;">3550</td>
+<td style="text-align: right;">001704</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">1995-03-16</td>
+<td style="text-align: right;">2026-08-31</td>
+<td style="text-align: right;">0.010389</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2017-02-28</td>
+<td style="text-align: right;">70033</td>
+<td style="text-align: left;">HARLEY DAVIDSON INC</td>
+<td style="text-align: right;">41282210</td>
+<td style="text-align: right;">HOG</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">N</td>
+<td style="text-align: right;">3751</td>
+<td style="text-align: right;">012389</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2000-01-31</td>
+<td style="text-align: right;">2020-06-19</td>
+<td style="text-align: right;">-0.005259</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2018-04-30</td>
+<td style="text-align: right;">13963</td>
+<td style="text-align: left;">NEWS CORP NEW</td>
+<td style="text-align: right;">65249B10</td>
+<td style="text-align: right;">NWSA</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">Q</td>
+<td style="text-align: right;">2711</td>
+<td style="text-align: right;">018043</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2013-07-01</td>
+<td style="text-align: right;">2026-08-31</td>
+<td style="text-align: right;">0.011392</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2020-04-30</td>
+<td style="text-align: right;">21573</td>
+<td style="text-align: left;">INTERNATIONAL PAPER CO</td>
+<td style="text-align: right;">46014610</td>
+<td style="text-align: right;">IP</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">N</td>
+<td style="text-align: right;">2621</td>
+<td style="text-align: right;">006104</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">1925-12-31</td>
+<td style="text-align: right;">2026-08-31</td>
+<td style="text-align: right;">0.100225</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2021-11-30</td>
+<td style="text-align: right;">42200</td>
+<td style="text-align: left;">PERKINELMER INC</td>
+<td style="text-align: right;">71404610</td>
+<td style="text-align: right;">PKI</td>
+<td style="text-align: right;">NS</td>
+<td style="text-align: right;">N</td>
+<td style="text-align: right;">3845</td>
+<td style="text-align: right;">004145</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">1985-05-09</td>
+<td style="text-align: right;">2026-08-31</td>
+<td style="text-align: right;">0.029793</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- /output:sp500ccm -->
 
 
 </section>
