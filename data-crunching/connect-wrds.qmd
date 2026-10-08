@@ -76,11 +76,12 @@ raw_sql function gives users more flexibility in extracting, joining, filtering 
 
 ```python
 crsp_m = conn.raw_sql("""
-    select permno, mthcaldt, mthret, mthvol, mthprc,
+    select distinct permno, mthcaldt, mthret, mthvol, mthprc,
            mthcumfacpr, mthcumfacshr
     from crsp_m_stock.msf_v2
     where mthcaldt between '01/01/2020' and '06/30/2026'
     and permno = 14593
+    order by mthcaldt
     """)  # Apple msf_v2 data from 2020 to June 2026
 ```
 
@@ -90,7 +91,7 @@ If you are already an experienced "proc sql" user under SAS, then these advanced
 
 ```python
 crsp_m = conn.raw_sql("""
-    select a.permno, b.cusip, b.ticker, a.mthcaldt,
+    select distinct a.permno, b.cusip, b.ticker, a.mthcaldt,
            b.primaryexch, b.siccd,
            a.mthret, a.mthvol, a.shrout, a.mthprc,
            a.mthcumfacpr, a.mthcumfacshr
@@ -104,6 +105,7 @@ crsp_m = conn.raw_sql("""
     and b.securitysubtype='COM'
     and b.usincflg='Y' and b.issuertype in ('ACOR', 'CORP')
     and a.permno=14593
+    order by a.mthcaldt
     """)  # Apple msf_v2 + security info history, 2020 to June 2026
 ```
 
