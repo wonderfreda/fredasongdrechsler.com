@@ -11,7 +11,8 @@ from nbclient import NotebookClient
 status = 0
 for path in sys.argv[1:]:
     nb = nbformat.read(path, as_version=4)
-    client = NotebookClient(nb, timeout=3600, kernel_name="python3",
+    kernel = nb.metadata.get("kernelspec", {}).get("name", "python3")
+    client = NotebookClient(nb, timeout=3600, kernel_name=kernel,
                             resources={"metadata": {"path": os.path.dirname(path) or "."}})
     try:
         client.execute()

@@ -1,0 +1,24 @@
+# Environment for notebooks/textual_analysis_sp500_ciz.ipynb (kernel "fredasite-nlp").
+# gensim 4.3.3 is compiled against NumPy 1.x: keep numpy<2 and scipy<1.14 pinned when adding packages.
+# wrds 3.1.6 needs SQLAlchemy 1.4, which pandas >= 2.2 no longer accepts in read_sql: keep pandas<2.2.
+#   uv venv .venv-nlp --python 3.12
+#   uv pip install --python .venv-nlp/bin/python -r _tools/requirements-nlp.txt
+#   .venv-nlp/bin/python -c "import nltk; nltk.download('stopwords')"
+#   .venv-nlp/bin/python -m ipykernel install --user --name fredasite-nlp
+gensim==4.3.3
+numpy<2
+scipy<1.14
+pandas<2.2
+sqlalchemy<2
+wrds
+scikit-learn
+spacy
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+nltk
+matplotlib
+plotly
+ipykernel
+nbclient
+nbformat
+jinja2
+tabulate

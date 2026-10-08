@@ -5,10 +5,12 @@ Run after re-executing a notebook:  python3 _tools/make_page.py [momentum|fama-f
 """
 import copy
 import os
+import re
 import sys
 import nbformat as nbf
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+WIDE_COLS = 9
 
 PAGES = {
     "momentum": dict(
@@ -55,6 +57,19 @@ PAGES = {
 
 As CUSIPs are more reliable company identifiers, we first try to match as much as possible through it. For the remaining ones that are not matched through CUSIP, we turn to TICKER as last resort. To impose additional layer of quality check, I add a company name matching layer on top of matching through CUSIPs and TICKERs. Name matching is done through RapidFuzz package (the successor to FuzzyWuzzy), but there can be many other fuzzy name matching methods.""",
     ),
+    "textual-analysis": dict(
+        src="notebooks/textual_analysis_sp500_ciz.ipynb",
+        dest="textual-analysis/textual-analysis-on-sp500-companies.ipynb",
+        title="Textual Analysis on S&P500 Companies",
+        subtitle="Bag of words and Doc2Vec on company business descriptions",
+        meta=[
+            ("Data", 'S&P 500 membership and identifiers from CRSP (<code>msp500list_v2</code>, <code>msf_v2</code>, <code>stksecurityinfohist</code>) <span class="tag ciz">CIZ format</span>; business descriptions from Compustat and Capital IQ'),
+            ("Sample", "S&P 500 companies as of December 2020"),
+            ("Methods", "Text cleaning with NLTK and spaCy, bag of words with scikit-learn, Doc2Vec with gensim"),
+            ("Author", "Qingyi (Freda) Song Drechsler"),
+        ],
+        intro="",
+    ),
 }
 
 
@@ -79,6 +94,12 @@ def build(name):
     for c in page.cells:
         if c.cell_type == "markdown" and c.source.lstrip().startswith("# "):
             c.source = c.source.lstrip().split("\n", 1)[1].strip() if "\n" in c.source.strip() else ""
+    # Wide table outputs (more than WIDE_COLS columns) use the page width instead of the text column
+    for c in page.cells:
+        if c.cell_type == "code" and any(
+                len(re.findall(r"<th", re.search(r"<tr.*?</tr>", o["data"]["text/html"], re.S).group(0))) > WIDE_COLS
+                for o in c.get("outputs", []) if "text/html" in o.get("data", {}) and "<table" in o["data"]["text/html"]):
+            c.source = "#| column: page\n" + c.source
     body = [c for c in page.cells if not (c.cell_type == "markdown" and not c.source.strip())]
     front = f'---\ntitle: "{p["title"]}"\nsubtitle: "{p["subtitle"]}"\n---'
     page.cells = [nbf.v4.new_raw_cell(front), nbf.v4.new_markdown_cell(header(p))] + body

@@ -31,7 +31,6 @@ PAGES = {
     "data-crunching/io_breadth": "data-crunching/io_breadth.qmd",
     "textual-analysis": "textual-analysis/index.qmd",
     "textual-analysis/wrds-sec": "textual-analysis/wrds-sec.qmd",
-    "textual-analysis/textual-analysis-on-sp500-companies": "textual-analysis/textual-analysis-on-sp500-companies.qmd",
     "web-scraping": "web-scraping/index.qmd",
     "web-scraping/european-short-position-data": "web-scraping/european-short-position-data.qmd",
 }
@@ -49,7 +48,8 @@ ALL_TARGETS = {**PAGES, "cv": "cv.qmd", "home": "index.qmd", "": "index.qmd",
                "data-crunching": "data-crunching/index.qmd",
                "data-crunching/momentum": "data-crunching/momentum.ipynb",
                "data-crunching/fama-french": "data-crunching/fama-french.ipynb",
-               "data-crunching/iclink": "data-crunching/iclink.ipynb"}
+               "data-crunching/iclink": "data-crunching/iclink.ipynb",
+               "textual-analysis/textual-analysis-on-sp500-companies": "textual-analysis/textual-analysis-on-sp500-companies.ipynb"}
 
 BLOCK = re.compile(
     r'data-code="(?P<code>[^"]*)"'

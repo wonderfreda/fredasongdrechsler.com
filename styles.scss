@@ -76,3 +76,10 @@ pre.text { background: transparent; border: none;
 .output-table tbody td:first-child { color: #8a8984; }
 .output-table.wide table { font-size: .72rem; }
 .output-table.wide th, .output-table.wide td { padding: .3rem .4rem; }
+
+/* notebook outputs on the site: printed text wraps; tables compact, digits aligned */
+.cell-output pre, .cell-output pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.cell-output-display table { font-family: $font-family-sans-serif; font-size: .74rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cell-output-display th, .cell-output-display td { padding: .25rem .45rem; }
+.cell-output-display td { max-width: 12rem; overflow: hidden; text-overflow: ellipsis; }
+.cell-output-display th { white-space: normal; vertical-align: bottom; }

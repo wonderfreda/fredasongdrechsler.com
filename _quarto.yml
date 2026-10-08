@@ -5,6 +5,8 @@ project:
     - "*.qmd"
     - "**/*.qmd"
     - "data-crunching/*.ipynb"
+    - "textual-analysis/*.ipynb"
+    - "!notebooks/"
   resources:
     - "notebooks/*.ipynb"
 
@@ -39,7 +41,7 @@ website:
       contents:
         - textual-analysis/index.qmd
         - textual-analysis/wrds-sec.qmd
-        - textual-analysis/textual-analysis-on-sp500-companies.qmd
+        - textual-analysis/textual-analysis-on-sp500-companies.ipynb
     - title: Web Scraping
       style: floating
       contents:

@@ -6,3 +6,4 @@
 __pycache__/
 /_reference/
 *.pkl
+/.venv-nlp/
