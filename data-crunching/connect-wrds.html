@@ -307,40 +307,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This command will list all the datasets that is available under the <a href="http://www.crsp.com/">CRSP database</a>, which researchers often refer to for pricing related data.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>conn.list_tables(library<span class="op">=</span><span class="st">'crsp'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>1.4 Explore a Given Table</strong></p>
-<p>This command returns a summary table of the “stocknames” dataset under the “crsp” database. This is similar to “proc content” command in SAS. If you are not already familiar with what is inside a particular dataset, this command is a good way to get a quick overview.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conn.describe_table(library<span class="op">=</span><span class="st">'crsp'</span>, table<span class="op">=</span><span class="st">'stocknames'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This command returns a summary table of the “stksecurityinfohist” dataset under the “crsp” database. This is similar to “proc content” command in SAS. If you are not already familiar with what is inside a particular dataset, this command is a good way to get a quick overview.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conn.describe_table(library<span class="op">=</span><span class="st">'crsp'</span>, table<span class="op">=</span><span class="st">'stksecurityinfohist'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>2. Calling Data</strong></p>
 <p>There are various ways to extract data through the WRDS API. The basic method is good for extracting data from one single dataset, while the sql based method is more flexible in joining multiple data sources and imposing conditioning statements.</p>
 <p><strong>2.1 Basic Method</strong></p>
-<p>The command lines extract first 1000 observations from the table “stocknames” under “crsp” library.</p>
+<p>The command lines extract first 1000 observations from the table “stksecurityinfohist” under “crsp” library.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get_table function - calling data from single table</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>stocknames <span class="op">=</span> conn.get_table(library<span class="op">=</span><span class="st">'crsp'</span>, table<span class="op">=</span><span class="st">'stocknames'</span>, obs<span class="op">=</span><span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>stkinfo <span class="op">=</span> conn.get_table(library<span class="op">=</span><span class="st">'crsp'</span>, table<span class="op">=</span><span class="st">'stksecurityinfohist'</span>, obs<span class="op">=</span><span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is equivalent to the SAS lines:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data stocknames<span class="op">;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> crsp.stocknames (obs<span class="op">=</span><span class="dv">1000</span>)<span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>run<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="sas"><code>data stkinfo;
+set crsp.stksecurityinfohist (obs=1000);
+run;</code></pre>
 <p><strong>2.2 Advanced Method</strong></p>
 <p>raw_sql function gives users more flexibility in extracting, joining, filtering data.</p>
 <p><strong>Example 1</strong>: calling data while imposing conditioning statement:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>crsp_m <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">                      select a.permno, a.date, a.ret, a.vol, a.shrout, a.prc, a.cfacpr, a.cfacshr</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">                      from crsp.msf as a</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">                      where a.date between '01/01/2010' and '12/31/2017'and a.permno = 14593</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">                      """</span>) <span class="co"># Apple msf data from 2010 to 2017</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">    select permno, mthcaldt, mthret, mthvol, mthprc,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">           mthcumfacpr, mthcumfacshr</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">    from crsp_m_stock.msf_v2</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">    where mthcaldt between '01/01/2020' and '06/30/2026'</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">    and permno = 14593</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>)  <span class="co"># Apple msf_v2 data from 2020 to June 2026</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Example 2</strong>: calling data from more than one data source while imposing conditional statement</p>
 <p>If you are already an experienced “proc sql” user under SAS, then these advanced data extraction lines should look fairly intuitive to you. Just keep in mind the subtle difference in the date formats accepted here.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>crsp_m <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="st">                      select a.permno, b.ncusip, b.ticker, a.date, b.shrcd, b.exchcd, b.siccd,</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">                      a.ret, a.vol, a.shrout, a.prc, a.cfacpr, a.cfacshr</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">                      from crsp.msf as a</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">                      left join crsp.msenames as b</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">                      on a.permno=b.permno</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">                      and b.namedt&lt;=a.date</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">                      and a.date&lt;=b.nameendt</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">                      where a.date between '01/01/2010' and '12/31/2017'</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">                      and b.shrcd between 10 and 11</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="st">                      and a.permno=14593</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">                      """</span>) <span class="co"># Apple msf + mse data from 2010 to 2017</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="st">    select a.permno, b.cusip, b.ticker, a.mthcaldt,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">           b.primaryexch, b.siccd,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">           a.mthret, a.mthvol, a.shrout, a.mthprc,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">           a.mthcumfacpr, a.mthcumfacshr</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">    from crsp_m_stock.msf_v2 as a</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">    left join crsp_m_stock.stksecurityinfohist as b</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">    on a.permno=b.permno</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">    and b.secinfostartdt&lt;=a.mthcaldt</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.mthcaldt&lt;=b.secinfoenddt</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="st">    where a.mthcaldt between '01/01/2020' and '06/30/2026'</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">    and b.sharetype='NS' and b.securitytype='EQTY'</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="st">    and b.securitysubtype='COM'</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="st">    and b.usincflg='Y' and b.issuertype in ('ACOR', 'CORP')</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.permno=14593</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>)  <span class="co"># Apple msf_v2 + security info history, 2020 to June 2026</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>3. Storing Output</strong></p>
 <p>Last but not least, when the program is done running and outputs need to be stored, there are several options.</p>
 <p><strong>3.1 Native “Pickle”</strong></p>
