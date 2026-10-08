@@ -26,7 +26,18 @@ conn = wrds.Connection()
 
 If you see the following message after running the code above, it means you've successfully established the connection!
 
-![](../images/intro-to-python-for-fnce_maneuvering-wrds-data/1.png)
+```text
+Enter your WRDS username [your_username]:
+Enter your password:
+WRDS recommends setting up a .pgpass file.
+Create .pgpass file now [y/n]?: y
+Created .pgpass file successfully.
+You can create this file yourself at any time with the create_pgpass_file() function.
+Loading library list...
+Done
+```
+
+Once the .pgpass file is set up, later connections skip the username and password prompts and only show the last two lines.
 
 ### 3. Explore Your Library and Table
 
@@ -75,7 +86,17 @@ company_narrow = conn.get_table(library='comp', table='company',
 
 Here we impose additional slicing by naming the columns we would like to extract: ['conm', 'gvkey', 'cik']. And the output dataframe company_narrow contains 5 records and 3 columns, as expected.
 
-![](../images/intro-to-python-for-fnce_maneuvering-wrds-data/2.png)
+<!-- output:company_narrow -->
+::: {.output-table}
+|    | conm                    |   gvkey |        cik |
+|---:|:------------------------|--------:|-----------:|
+|  0 | A & E PLASTIK PAK INC   |  001000 |       None |
+|  1 | A & M FOOD SERVICES INC |  001001 | 0000723576 |
+|  2 | AAI CORP                |  001002 | 0001306124 |
+|  3 | A.A. IMPORTING CO INC   |  001003 | 0000730052 |
+|  4 | AAR CORP                |  001004 | 0000001750 |
+:::
+<!-- /output:company_narrow -->
 
 ### 4.2 raw_sql() method for subsetting data
 
@@ -86,17 +107,20 @@ If instead of querying the entire table, you want to impose a "where" condition 
 # from January 2019 to June 2026
 
 apple = conn.raw_sql("""
-    select permno, mthcaldt, mthprc, mthret, shrout
+    select distinct permno, mthcaldt, mthprc, mthret, shrout
     from crsp_m_stock.msf_v2
     where permno = 14593
     and mthcaldt between '01/01/2019' and '06/30/2026'
+    order by mthcaldt
     """, date_cols=['mthcaldt'])
 ```
 
 The example above extracts several columns from the CRSP monthly stock file in the new CIZ format (msf_v2, here from the monthly-updated crsp_m_stock library), and imposes two conditioning statements: permno=14593 is to zoom in on one particular stock, and date range condition narrows the output to data from January 2019 to June 2026. Notice the last **date_cols=['mthcaldt']** component in the code. This indicates that the "mthcaldt" column (the monthly calendar date) should follow datetime format.
 
+<!-- output:apple -->
 First 12 of the 90 monthly records returned:
 
+::: {.output-table}
 |    |   permno |   mthcaldt |   mthprc |    mthret |   shrout |
 |---:|---------:|-----------:|---------:|----------:|---------:|
 |  0 |    14593 | 2019-01-31 |   166.44 |  0.055154 |  4715280 |
@@ -111,6 +135,8 @@ First 12 of the 90 monthly records returned:
 |  9 |    14593 | 2019-10-31 |   248.76 |  0.110684 |  4443265 |
 | 10 |    14593 | 2019-11-29 |   267.25 |  0.077517 |  4443265 |
 | 11 |    14593 | 2019-12-31 |   293.65 |  0.098784 |  4384959 |
+:::
+<!-- /output:apple -->
 
 ### 4.3 raw_sql() method for joining multiple datasets
 
@@ -138,12 +164,36 @@ apple_fund = conn.raw_sql("""
     and a.datafmt = 'STD'
     and a.consol = 'C'
     and a.indfmt = 'INDL'
+    order by a.datadate
     """, date_cols=['datadate'])
 ```
 
 We join the two data sources by matching on the common keys. In this case, gvkey+iid combination and fiscal date. Conditioning statements are part of the SQL statement by specifying company ticker, date range, and several other compustat data requirements. Last by not least, the code indicates that the column 'datadate' should be formatted in the date format.
 
-![](../images/intro-to-python-for-fnce_maneuvering-wrds-data/4.png)
+<!-- output:apple_fund -->
+The 16 fiscal years returned:
+
+::: {.output-table}
+|    |   gvkey |   iid |   datadate |   tic | conm      |       at |   prccm |     cshoq |
+|---:|--------:|------:|-----------:|------:|:----------|---------:|--------:|----------:|
+|  0 |  001690 |    01 | 2010-09-30 |  AAPL | APPLE INC |  75183.0 | 283.750 |   915.970 |
+|  1 |  001690 |    01 | 2011-09-30 |  AAPL | APPLE INC | 116371.0 | 381.320 |   929.277 |
+|  2 |  001690 |    01 | 2012-09-30 |  AAPL | APPLE INC | 176064.0 | 667.105 |   939.208 |
+|  3 |  001690 |    01 | 2013-09-30 |  AAPL | APPLE INC | 207000.0 | 476.750 |   899.213 |
+|  4 |  001690 |    01 | 2014-09-30 |  AAPL | APPLE INC | 231839.0 | 100.750 |  5866.161 |
+|  5 |  001690 |    01 | 2015-09-30 |  AAPL | APPLE INC | 290479.0 | 110.300 |  5578.753 |
+|  6 |  001690 |    01 | 2016-09-30 |  AAPL | APPLE INC | 321686.0 | 113.050 |  5336.166 |
+|  7 |  001690 |    01 | 2017-09-30 |  AAPL | APPLE INC | 375319.0 | 154.120 |  5126.201 |
+|  8 |  001690 |    01 | 2018-09-30 |  AAPL | APPLE INC | 365725.0 | 225.740 |  4754.986 |
+|  9 |  001690 |    01 | 2019-09-30 |  AAPL | APPLE INC | 338516.0 | 223.970 |  4443.236 |
+| 10 |  001690 |    01 | 2020-09-30 |  AAPL | APPLE INC | 323888.0 | 115.810 | 16976.763 |
+| 11 |  001690 |    01 | 2021-09-30 |  AAPL | APPLE INC | 351002.0 | 141.500 | 16426.786 |
+| 12 |  001690 |    01 | 2022-09-30 |  AAPL | APPLE INC | 352755.0 | 138.200 | 15943.425 |
+| 13 |  001690 |    01 | 2023-09-30 |  AAPL | APPLE INC | 352583.0 | 171.210 | 15550.061 |
+| 14 |  001690 |    01 | 2024-09-30 |  AAPL | APPLE INC | 364980.0 | 233.000 | 15116.786 |
+| 15 |  001690 |    01 | 2025-09-30 |  AAPL | APPLE INC | 359241.0 | 254.630 | 14773.260 |
+:::
+<!-- /output:apple_fund -->
 
 ### 5. Saving Your Output
 

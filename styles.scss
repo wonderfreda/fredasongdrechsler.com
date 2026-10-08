@@ -62,3 +62,15 @@ div.sourceCode, pre.sourceCode { border: 1px solid #e4e2dc; border-radius: 4px; 
 
 /* show operators like >= and != as typed, not as ligatures */
 code, pre, .sourceCode { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+
+/* plain-text output blocks: wrap long lines, styled as output rather than code */
+pre.text, pre.text code { white-space: pre-wrap; overflow-wrap: anywhere; }
+pre.text { background: transparent; border: none;
+  border-left: 2px solid #e4e2dc; border-radius: 0; padding: .2rem 0 .2rem .9rem; font-size: .78rem; color: #4a4a46; }
+
+/* data output tables: compact, digits aligned, no wrapping inside cells */
+.output-table { overflow-x: auto; margin-bottom: 1.2rem; }
+.output-table table { font-family: $font-family-sans-serif; font-size: .78rem; font-variant-numeric: tabular-nums; white-space: nowrap; width: auto; }
+.output-table th, .output-table td { padding: .3rem .45rem; }
+.output-table thead th { font-weight: 600; color: #4a4a46; }
+.output-table tbody td:first-child { color: #8a8984; }
