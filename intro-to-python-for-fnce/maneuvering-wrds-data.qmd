@@ -30,7 +30,7 @@ If you see the following message after running the code above, it means you've s
 
 ### 3. Explore Your Library and Table
 
-For SAS programmers, we tend to refer to databases on WRDS as "libraries", and specific data items within that database "datasets". In python language, we refer to these as "libraries" and "tables". For example, pricing database CRSP is a **library**, and the monthly stock file CRSP.MSF is a **table**.
+For SAS programmers, we tend to refer to databases on WRDS as "libraries", and specific data items within that database "datasets". In python language, we refer to these as "libraries" and "tables". For example, pricing database CRSP is a **library**, and the monthly stock file CRSP.MSF_V2 is a **table**.
 
 To explore your database subscription on WRDS, use the **list_libraries()** function.
 
@@ -50,7 +50,7 @@ The output from this command line is again a "list" containing all tables under 
 
 ### 4. Query Data from WRDS Server
 
-There are several ways to extract data from WRDS. I will go over three scenarios, from the most straightforward method of **get_table()**, to more sophisticated **raw_sql()**that accommodates conditioning statements as well as merging several data sources.
+There are several ways to extract data from WRDS. I will go over three scenarios, from the most straightforward method of **get_table()**, to more sophisticated **raw_sql()** that accommodates conditioning statements as well as merging several data sources.
 
 ### 4.1 get_table() method
 
@@ -83,18 +83,34 @@ If instead of querying the entire table, you want to impose a "where" condition 
 
 ```python
 # Select one stock's monthly price
-# from 2019 onwards
+# from January 2019 to June 2026
 
-apple = conn.raw_sql("""select permno, date, prc, ret, shrout 
-                        from crsp.msf 
-                        where permno = 14593
-                        and date>='01/01/2019'""", 
-                     date_cols=['date'])
+apple = conn.raw_sql("""
+    select permno, mthcaldt, mthprc, mthret, shrout
+    from crsp_m_stock.msf_v2
+    where permno = 14593
+    and mthcaldt between '01/01/2019' and '06/30/2026'
+    """, date_cols=['mthcaldt'])
 ```
 
-The example above extracts several columns from crsp.msf table, and imposes two conditioning statements: permno=14593 is to zoom in on one particular stock, and date range condition narrows the output to most recent data starting in 2019 January. Notice the last **date_cols=['date']**component in the code. This indicates that the "date" column should follow datetime format.
+The example above extracts several columns from the CRSP monthly stock file in the new CIZ format (msf_v2, here from the monthly-updated crsp_m_stock library), and imposes two conditioning statements: permno=14593 is to zoom in on one particular stock, and date range condition narrows the output to data from January 2019 to June 2026. Notice the last **date_cols=['mthcaldt']** component in the code. This indicates that the "mthcaldt" column (the monthly calendar date) should follow datetime format.
 
-![](../images/intro-to-python-for-fnce_maneuvering-wrds-data/3.png)
+First 12 of the 90 monthly records returned:
+
+|    |   permno |   mthcaldt |   mthprc |    mthret |   shrout |
+|---:|---------:|-----------:|---------:|----------:|---------:|
+|  0 |    14593 | 2019-01-31 |   166.44 |  0.055154 |  4715280 |
+|  1 |    14593 | 2019-02-28 |   173.15 |  0.044771 |  4715280 |
+|  2 |    14593 | 2019-03-29 |   189.95 |  0.097026 |  4715280 |
+|  3 |    14593 | 2019-04-30 |   200.67 |  0.056436 |  4601075 |
+|  4 |    14593 | 2019-05-31 |   175.07 | -0.124166 |  4601075 |
+|  5 |    14593 | 2019-06-28 |   197.92 |  0.130519 |  4531395 |
+|  6 |    14593 | 2019-07-31 |   213.04 |  0.076395 |  4519180 |
+|  7 |    14593 | 2019-08-30 |   208.74 | -0.016430 |  4519180 |
+|  8 |    14593 | 2019-09-30 |   223.97 |  0.072962 |  4443236 |
+|  9 |    14593 | 2019-10-31 |   248.76 |  0.110684 |  4443265 |
+| 10 |    14593 | 2019-11-29 |   267.25 |  0.077517 |  4443265 |
+| 11 |    14593 | 2019-12-31 |   293.65 |  0.098784 |  4384959 |
 
 ### 4.3 raw_sql() method for joining multiple datasets
 
@@ -106,22 +122,23 @@ I demonstrate this using the example below. This exercise creates a dataframe ap
 # Joining data from two sources
 # And imposing conditioning statement
 
-apple_fund = conn.raw_sql("""select a.gvkey, a.iid, a.datadate, a.tic, a.conm,
-                            a.at, b.prccm, b.cshoq 
-                            
-                            from comp.funda a 
-                            inner join comp.secm b 
-                            
-                            on a.gvkey = b.gvkey
-                            and a.iid = b.iid
-                            and a.datadate = b.datadate 
-                            
-                            where a.tic = 'AAPL' 
-                            and a.datadate>='01/01/2010'
-                            and a.datafmt = 'STD' 
-                            and a.consol = 'C' 
-                            and a.indfmt = 'INDL'
-                            """, date_cols=['datadate'])
+apple_fund = conn.raw_sql("""
+    select a.gvkey, a.iid, a.datadate, a.tic, a.conm,
+           a.at, b.prccm, b.cshoq
+
+    from comp.funda a
+    inner join comp.secm b
+
+    on a.gvkey = b.gvkey
+    and a.iid = b.iid
+    and a.datadate = b.datadate
+
+    where a.tic = 'AAPL'
+    and a.datadate>='01/01/2010'
+    and a.datafmt = 'STD'
+    and a.consol = 'C'
+    and a.indfmt = 'INDL'
+    """, date_cols=['datadate'])
 ```
 
 We join the two data sources by matching on the common keys. In this case, gvkey+iid combination and fiscal date. Conditioning statements are part of the SQL statement by specifying company ticker, date range, and several other compustat data requirements. Last by not least, the code indicates that the column 'datadate' should be formatted in the date format.
