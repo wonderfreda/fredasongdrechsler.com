@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-65442d70271d454a29f3353a9a9c231f.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-d4318592323045e5894dd1f2449452d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ebb60c0fa441bc42bd3c5f23da1a0ff8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -248,76 +248,455 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You will need your WRDS username and password (yes, the ones you use for logging onto WRDS website) to establish the connection. Once you run this code, you will be prompted to enter those info. In the code below, I name the wrds connection as “conn”. And you will see this referred to repeatedly in later parts of this exercise. Of course, you can name it any other way to your liking.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> wrds.Connection()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If you see the following message after running the code above, it means you’ve successfully established the connection!</p>
-<p><img src="../images/intro-to-python-for-fnce_maneuvering-wrds-data/1.png" class="img-fluid"></p>
+<pre class="text"><code>Enter your WRDS username [your_username]:
+Enter your password:
+WRDS recommends setting up a .pgpass file.
+Create .pgpass file now [y/n]?: y
+Created .pgpass file successfully.
+You can create this file yourself at any time with the create_pgpass_file() function.
+Loading library list...
+Done</code></pre>
+<p>Once the .pgpass file is set up, later connections skip the username and password prompts and only show the last two lines.</p>
 </section>
 <section id="explore-your-library-and-table" class="level3">
 <h3 class="anchored" data-anchor-id="explore-your-library-and-table">3. Explore Your Library and Table</h3>
-<p>For SAS programmers, we tend to refer to databases on WRDS as “libraries”, and specific data items within that database “datasets”. In python language, we refer to these as “libraries” and “tables”. For example, pricing database CRSP is a <strong>library</strong>, and the monthly stock file CRSP.MSF is a <strong>table</strong>.</p>
+<p>For SAS programmers, we tend to refer to databases on WRDS as “libraries”, and specific data items within that database “datasets”. In python language, we refer to these as “libraries” and “tables”. For example, pricing database CRSP is a <strong>library</strong>, and the monthly stock file CRSP.MSF_V2 is a <strong>table</strong>.</p>
 <p>To explore your database subscription on WRDS, use the <strong>list_libraries()</strong> function.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>conn.list_libraries()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conn.list_libraries()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The output is a “list” containing all libraries your institution has subscription to.</p>
 <p>To explore the datasets under any particular database, or library, use the <strong>list_tables()</strong> function. Of course, you will need to specify which library’s tables you want to display. You can do so by adding ‘library =’ parameter in the list_tables() function. Below is an example of listing all datasets/tables under the Compstat library.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conn.list_tables(library<span class="op">=</span><span class="st">'comp'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>conn.list_tables(library<span class="op">=</span><span class="st">'comp'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The output from this command line is again a “list” containing all tables under the umbrella of Compustat library.</p>
 </section>
 <section id="query-data-from-wrds-server" class="level3">
 <h3 class="anchored" data-anchor-id="query-data-from-wrds-server">4. Query Data from WRDS Server</h3>
-<p>There are several ways to extract data from WRDS. I will go over three scenarios, from the most straightforward method of <strong>get_table()</strong>, to more sophisticated <strong>raw_sql()</strong>that accommodates conditioning statements as well as merging several data sources.</p>
+<p>There are several ways to extract data from WRDS. I will go over three scenarios, from the most straightforward method of <strong>get_table()</strong>, to more sophisticated <strong>raw_sql()</strong> that accommodates conditioning statements as well as merging several data sources.</p>
 </section>
 <section id="get_table-method" class="level3">
 <h3 class="anchored" data-anchor-id="get_table-method">4.1 get_table() method</h3>
 <p>Let’s start with the basic <strong>get_table()</strong> method. This method is handy for getting data from one single dataset. You will need to specify which library and table to “get”. The get_table() method has feature that enables slicing data by number of rows or column names to include.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract first 5 obs from comp.company</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>company <span class="op">=</span> conn.get_table(library<span class="op">=</span><span class="st">'comp'</span>, table<span class="op">=</span><span class="st">'company'</span>, obs<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract first 5 obs from comp.company</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>company <span class="op">=</span> conn.get_table(library<span class="op">=</span><span class="st">'comp'</span>, table<span class="op">=</span><span class="st">'company'</span>, obs<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In the example above, we are getting the comp.company table by specifying library name (comp) and table name (company). The last component ‘obs=5’ states only the first 5 rows will be extracted.</p>
 <p>Instead of getting the entire wide table of comp.company, you can also narrow down to the specific columns to extract from the source table.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Narrow down the specific columns to extract</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>company_narrow <span class="op">=</span> conn.get_table(library<span class="op">=</span><span class="st">'comp'</span>, table<span class="op">=</span><span class="st">'company'</span>, </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                                columns <span class="op">=</span> [<span class="st">'conm'</span>, <span class="st">'gvkey'</span>, <span class="st">'cik'</span>], obs<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Narrow down the specific columns to extract</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>company_narrow <span class="op">=</span> conn.get_table(library<span class="op">=</span><span class="st">'comp'</span>, table<span class="op">=</span><span class="st">'company'</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                columns <span class="op">=</span> [<span class="st">'conm'</span>, <span class="st">'gvkey'</span>, <span class="st">'cik'</span>], obs<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Here we impose additional slicing by naming the columns we would like to extract: [‘conm’, ‘gvkey’, ‘cik’]. And the output dataframe company_narrow contains 5 records and 3 columns, as expected.</p>
-<p><img src="../images/intro-to-python-for-fnce_maneuvering-wrds-data/2.png" class="img-fluid"></p>
+<!-- output:company_narrow -->
+<div class="output-table">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: left;">conm</th>
+<th style="text-align: right;">gvkey</th>
+<th style="text-align: right;">cik</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A &amp; E PLASTIK PAK INC</td>
+<td style="text-align: right;">001000</td>
+<td style="text-align: right;">None</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">A &amp; M FOOD SERVICES INC</td>
+<td style="text-align: right;">001001</td>
+<td style="text-align: right;">0000723576</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">AAI CORP</td>
+<td style="text-align: right;">001002</td>
+<td style="text-align: right;">0001306124</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">A.A. IMPORTING CO INC</td>
+<td style="text-align: right;">001003</td>
+<td style="text-align: right;">0000730052</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">AAR CORP</td>
+<td style="text-align: right;">001004</td>
+<td style="text-align: right;">0000001750</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- /output:company_narrow -->
 </section>
 <section id="raw_sql-method-for-subsetting-data" class="level3">
 <h3 class="anchored" data-anchor-id="raw_sql-method-for-subsetting-data">4.2 raw_sql() method for subsetting data</h3>
 <p>If instead of querying the entire table, you want to impose a “where” condition to subset the data, raw_sql() method provides that functionality. The syntax is fairly standard SQL style.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select one stock's monthly price</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from 2019 onwards</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>apple <span class="op">=</span> conn.raw_sql(<span class="st">"""select permno, date, prc, ret, shrout </span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">                        from crsp.msf </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">                        where permno = 14593</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">                        and date&gt;='01/01/2019'"""</span>, </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                     date_cols<span class="op">=</span>[<span class="st">'date'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The example above extracts several columns from crsp.msf table, and imposes two conditioning statements: permno=14593 is to zoom in on one particular stock, and date range condition narrows the output to most recent data starting in 2019 January. Notice the last <strong>date_cols=[‘date’]</strong>component in the code. This indicates that the “date” column should follow datetime format.</p>
-<p><img src="../images/intro-to-python-for-fnce_maneuvering-wrds-data/3.png" class="img-fluid"></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select one stock's monthly price</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from January 2019 to June 2026</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>apple <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">    select distinct permno, mthcaldt, mthprc, mthret, shrout</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">    from crsp_m_stock.msf_v2</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">    where permno = 14593</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">    and mthcaldt between '01/01/2019' and '06/30/2026'</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">    order by mthcaldt</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>, date_cols<span class="op">=</span>[<span class="st">'mthcaldt'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The example above extracts several columns from the CRSP monthly stock file in the new CIZ format (msf_v2, here from the monthly-updated crsp_m_stock library), and imposes two conditioning statements: permno=14593 is to zoom in on one particular stock, and date range condition narrows the output to data from January 2019 to June 2026. Notice the last <strong>date_cols=[‘mthcaldt’]</strong> component in the code. This indicates that the “mthcaldt” column (the monthly calendar date) should follow datetime format.</p>
+<!-- output:apple -->
+<p>First 12 of the 90 monthly records returned:</p>
+<div class="output-table">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: right;">permno</th>
+<th style="text-align: right;">mthcaldt</th>
+<th style="text-align: right;">mthprc</th>
+<th style="text-align: right;">mthret</th>
+<th style="text-align: right;">shrout</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-01-31</td>
+<td style="text-align: right;">166.44</td>
+<td style="text-align: right;">0.055154</td>
+<td style="text-align: right;">4715280</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-02-28</td>
+<td style="text-align: right;">173.15</td>
+<td style="text-align: right;">0.044771</td>
+<td style="text-align: right;">4715280</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-03-29</td>
+<td style="text-align: right;">189.95</td>
+<td style="text-align: right;">0.097026</td>
+<td style="text-align: right;">4715280</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-04-30</td>
+<td style="text-align: right;">200.67</td>
+<td style="text-align: right;">0.056436</td>
+<td style="text-align: right;">4601075</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-05-31</td>
+<td style="text-align: right;">175.07</td>
+<td style="text-align: right;">-0.124166</td>
+<td style="text-align: right;">4601075</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-06-28</td>
+<td style="text-align: right;">197.92</td>
+<td style="text-align: right;">0.130519</td>
+<td style="text-align: right;">4531395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-07-31</td>
+<td style="text-align: right;">213.04</td>
+<td style="text-align: right;">0.076395</td>
+<td style="text-align: right;">4519180</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-08-30</td>
+<td style="text-align: right;">208.74</td>
+<td style="text-align: right;">-0.016430</td>
+<td style="text-align: right;">4519180</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-09-30</td>
+<td style="text-align: right;">223.97</td>
+<td style="text-align: right;">0.072962</td>
+<td style="text-align: right;">4443236</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-10-31</td>
+<td style="text-align: right;">248.76</td>
+<td style="text-align: right;">0.110684</td>
+<td style="text-align: right;">4443265</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-11-29</td>
+<td style="text-align: right;">267.25</td>
+<td style="text-align: right;">0.077517</td>
+<td style="text-align: right;">4443265</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">14593</td>
+<td style="text-align: right;">2019-12-31</td>
+<td style="text-align: right;">293.65</td>
+<td style="text-align: right;">0.098784</td>
+<td style="text-align: right;">4384959</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- /output:apple -->
 </section>
 <section id="raw_sql-method-for-joining-multiple-datasets" class="level3">
 <h3 class="anchored" data-anchor-id="raw_sql-method-for-joining-multiple-datasets">4.3 raw_sql() method for joining multiple datasets</h3>
 <p>So far we have only queried data from single data source. If a researcher needs to query data from multiple data sources, raw_sql() method offers this capacity. For SAS programmers, this is essentially the “proc sql” procedure, just that it is now actually true SQL.</p>
 <p>I demonstrate this using the example below. This exercise creates a dataframe apple_fund reporting fiscal year end balance sheet item (total asset - at) and closing price (prccm) by joining two different data sources: fundamental data through comp.funda (fundamental annual data) and pricing data through comp.secm (monthly pricing data).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Joining data from two sources</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># And imposing conditioning statement</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>apple_fund <span class="op">=</span> conn.raw_sql(<span class="st">"""select a.gvkey, a.iid, a.datadate, a.tic, a.conm,</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">                            a.at, b.prccm, b.cshoq </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">                            </span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">                            from comp.funda a </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">                            inner join comp.secm b </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">                            </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">                            on a.gvkey = b.gvkey</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="st">                            and a.iid = b.iid</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">                            and a.datadate = b.datadate </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="st">                            </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="st">                            where a.tic = 'AAPL' </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="st">                            and a.datadate&gt;='01/01/2010'</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="st">                            and a.datafmt = 'STD' </span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="st">                            and a.consol = 'C' </span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="st">                            and a.indfmt = 'INDL'</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="st">                            """</span>, date_cols<span class="op">=</span>[<span class="st">'datadate'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Joining data from two sources</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># And imposing conditioning statement</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>apple_fund <span class="op">=</span> conn.raw_sql(<span class="st">"""</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">    select a.gvkey, a.iid, a.datadate, a.tic, a.conm,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">           a.at, b.prccm, b.cshoq</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">    from comp.funda a</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">    inner join comp.secm b</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">    on a.gvkey = b.gvkey</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.iid = b.iid</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.datadate = b.datadate</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="st">    where a.tic = 'AAPL'</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.datadate&gt;='01/01/2010'</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.datafmt = 'STD'</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.consol = 'C'</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="st">    and a.indfmt = 'INDL'</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="st">    order by a.datadate</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>, date_cols<span class="op">=</span>[<span class="st">'datadate'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We join the two data sources by matching on the common keys. In this case, gvkey+iid combination and fiscal date. Conditioning statements are part of the SQL statement by specifying company ticker, date range, and several other compustat data requirements. Last by not least, the code indicates that the column ‘datadate’ should be formatted in the date format.</p>
-<p><img src="../images/intro-to-python-for-fnce_maneuvering-wrds-data/4.png" class="img-fluid"></p>
+<!-- output:apple_fund -->
+<p>The 16 fiscal years returned:</p>
+<div class="output-table">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: right;">gvkey</th>
+<th style="text-align: right;">iid</th>
+<th style="text-align: right;">datadate</th>
+<th style="text-align: right;">tic</th>
+<th style="text-align: left;">conm</th>
+<th style="text-align: right;">at</th>
+<th style="text-align: right;">prccm</th>
+<th style="text-align: right;">cshoq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2010-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">75183.0</td>
+<td style="text-align: right;">283.750</td>
+<td style="text-align: right;">915.970</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2011-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">116371.0</td>
+<td style="text-align: right;">381.320</td>
+<td style="text-align: right;">929.277</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2012-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">176064.0</td>
+<td style="text-align: right;">667.105</td>
+<td style="text-align: right;">939.208</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2013-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">207000.0</td>
+<td style="text-align: right;">476.750</td>
+<td style="text-align: right;">899.213</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2014-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">231839.0</td>
+<td style="text-align: right;">100.750</td>
+<td style="text-align: right;">5866.161</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2015-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">290479.0</td>
+<td style="text-align: right;">110.300</td>
+<td style="text-align: right;">5578.753</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2016-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">321686.0</td>
+<td style="text-align: right;">113.050</td>
+<td style="text-align: right;">5336.166</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2017-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">375319.0</td>
+<td style="text-align: right;">154.120</td>
+<td style="text-align: right;">5126.201</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2018-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">365725.0</td>
+<td style="text-align: right;">225.740</td>
+<td style="text-align: right;">4754.986</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2019-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">338516.0</td>
+<td style="text-align: right;">223.970</td>
+<td style="text-align: right;">4443.236</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2020-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">323888.0</td>
+<td style="text-align: right;">115.810</td>
+<td style="text-align: right;">16976.763</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2021-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">351002.0</td>
+<td style="text-align: right;">141.500</td>
+<td style="text-align: right;">16426.786</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2022-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">352755.0</td>
+<td style="text-align: right;">138.200</td>
+<td style="text-align: right;">15943.425</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2023-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">352583.0</td>
+<td style="text-align: right;">171.210</td>
+<td style="text-align: right;">15550.061</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2024-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">364980.0</td>
+<td style="text-align: right;">233.000</td>
+<td style="text-align: right;">15116.786</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">001690</td>
+<td style="text-align: right;">01</td>
+<td style="text-align: right;">2025-09-30</td>
+<td style="text-align: right;">AAPL</td>
+<td style="text-align: left;">APPLE INC</td>
+<td style="text-align: right;">359241.0</td>
+<td style="text-align: right;">254.630</td>
+<td style="text-align: right;">14773.260</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- /output:apple_fund -->
 </section>
 <section id="saving-your-output" class="level3">
 <h3 class="anchored" data-anchor-id="saving-your-output">5. Saving Your Output</h3>
@@ -331,29 +710,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="python-native-pickle-file" class="level3">
 <h3 class="anchored" data-anchor-id="python-native-pickle-file">5.1 Python native pickle file</h3>
 <p>If you intend to continue your data work in the Python environment, and hence would like to save some intermediate results to avoid data crunching all over again, pickle is a good output format.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pickle the dataframe</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>apple_fund.to_pickle(<span class="st">"/your local directory/apple_fund.pkl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pickle the dataframe</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>apple_fund.to_pickle(<span class="st">"/your local directory/apple_fund.pkl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="excel-file-formats" class="level3">
 <h3 class="anchored" data-anchor-id="excel-file-formats">5.2 Excel file formats</h3>
 <p>You can export the outputs to various excel file formats, such as xlsx or csv. This gives you the flexibility of integrating the output into other programming environments.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># export the dataframe to csv format</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>apple_fund.to_csv(<span class="st">'/your local directory/apple_fund.csv'</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># export the dataframe to xlsx format</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>apple_fund.to_excel(<span class="st">'/your local directory/apple_fund.xlsx'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># export the dataframe to csv format</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>apple_fund.to_csv(<span class="st">'/your local directory/apple_fund.csv'</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># export the dataframe to xlsx format</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>apple_fund.to_excel(<span class="st">'/your local directory/apple_fund.xlsx'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="stata-file-format" class="level3">
 <h3 class="anchored" data-anchor-id="stata-file-format">5.3 STATA file format</h3>
 <p>Pandas has also built in an easy connection to STATA file format through the to_stata() method.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># export the dataframe to dta format for STATA</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>apple_fund.to_stata(<span class="st">'/your local directory/apple_fund.dta'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># export the dataframe to dta format for STATA</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>apple_fund.to_stata(<span class="st">'/your local directory/apple_fund.dta'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="sas-datasets" class="level3">
 <h3 class="anchored" data-anchor-id="sas-datasets">5.4 SAS datasets!</h3>
