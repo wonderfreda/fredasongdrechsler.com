@@ -300,7 +300,7 @@ require(['plotly'], function(Plotly) {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../data-crunching/momentum.html">Anomalies &amp; risk factors</a></li><li class="breadcrumb-item"><a href="../data-crunching/momentum.html">Momentum</a></li></ol></nav>
 <div class="quarto-title">
@@ -723,10 +723,10 @@ Name: momr, dtype: int64</code></pre>
 </div>
 </div>
 </section>
-<section id="comparison-with-published-results" class="level2">
+<section id="comparison-with-published-results" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="comparison-with-published-results">Comparison with published results</h2>
 <p>Restricting the holding months to 1965–1989 reproduces the original sample. For J = 6 and K = 6, the WRDS SAS (CIZ format) code reports winners 1.71% (t = 4.22), losers 0.80% (t = 1.59) and long–short 0.91% (t = 3.01). Jegadeesh and Titman (1993, Table 1) report 1.74% (4.33), 0.79% (1.56) and 0.95% (3.07).</p>
-<div id="280f0d1c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-07T21:32:56.429619Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-07T21:32:56.429545Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-07T21:32:56.440073Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-07T21:32:56.439859Z&quot;}}" data-execution_count="11">
+<div id="280f0d1c" class="cell page-columns page-full" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-10-07T21:32:56.429619Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-07T21:32:56.429545Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-07T21:32:56.440073Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-07T21:32:56.439859Z&quot;}}" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>jt_sample <span class="op">=</span> ewretdat3.loc[<span class="st">'1965-01-01'</span>:<span class="st">'1989-12-31'</span>, [<span class="st">'winners'</span>,<span class="st">'losers'</span>,<span class="st">'long_short'</span>]]</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>jt_output <span class="op">=</span> jt_sample.<span class="bu">apply</span>(tstats).T</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -737,7 +737,7 @@ Name: momr, dtype: int64</code></pre>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                        published], axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>comparison.style.<span class="bu">format</span>({c:<span class="st">'</span><span class="sc">{:.2%}</span><span class="st">'</span> <span class="cf">for</span> c <span class="kw">in</span> comparison.columns <span class="cf">if</span> <span class="st">'mean'</span> <span class="kw">in</span> c} <span class="op">|</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                        {c:<span class="st">'</span><span class="sc">{:.2f}</span><span class="st">'</span> <span class="cf">for</span> c <span class="kw">in</span> comparison.columns <span class="cf">if</span> c.endswith(<span class="st">' t'</span>)})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display column-page" data-execution_count="11">
 <style type="text/css">
 </style>
 
