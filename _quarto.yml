@@ -69,7 +69,7 @@ website:
         - section: Institutional ownership
           contents:
             - text: Ownership Breadth
-              href: data-crunching/io_breadth.qmd
+              href: data-crunching/io_breadth.ipynb
   page-footer:
     left: |
       © 2024 by Freda Song Drechsler. Please cite as: Drechsler, Qingyi (Freda) S., 2024,

@@ -96,6 +96,19 @@ As CUSIPs are more reliable company identifiers, we first try to match as much a
         ],
         intro="",
     ),
+    "io_breadth": dict(
+        src="notebooks/io_breadth_ciz.ipynb",
+        dest="data-crunching/io_breadth.ipynb",
+        title="Institutional Ownership Breadth",
+        subtitle="Chen, Hong and Stein (2002)",
+        meta=[
+            ("Paper", '<a href="https://www.sciencedirect.com/science/article/pii/S0304405X02002234">Chen, J., H. Hong and J. Stein (2002), Breadth of Ownership and Stock Returns, <em>Journal of Financial Economics</em></a>'),
+            ("Data", 'Thomson Reuters 13F holdings (<code>tfn.s34type1</code>, <code>s34type3</code>); CRSP monthly stock file <code>msf_v2</code> and <code>stksecurityinfohist</code> <span class="tag ciz">CIZ format</span>'),
+            ("Sample", "CRSP common stocks, 13F report dates March 1980 to December 2025 (Q1 2026 left out: Vanguard's holdings are not yet in the 13F data on WRDS)"),
+            ("Author", "Qingyi (Freda) Song Drechsler"),
+        ],
+        intro="",
+    ),
 }
 
 
