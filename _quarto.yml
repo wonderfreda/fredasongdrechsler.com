@@ -61,7 +61,7 @@ website:
             - text: Fama–French 3-Factor
               href: data-crunching/fama-french.ipynb
             - text: DGTW Benchmarks
-              href: data-crunching/dgtw.qmd
+              href: data-crunching/dgtw.ipynb
             - text: Linking IBES and CRSP
               href: data-crunching/iclink.ipynb
             - text: Post-Earnings Announcement Drift

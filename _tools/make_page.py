@@ -83,6 +83,19 @@ As CUSIPs are more reliable company identifiers, we first try to match as much a
         ],
         intro="",
     ),
+    "dgtw": dict(
+        src="notebooks/dgtw_ciz.ipynb",
+        dest="data-crunching/dgtw.ipynb",
+        title="Characteristics-Based Benchmarks (DGTW)",
+        subtitle="Daniel, Grinblatt, Titman and Wermers (1997)",
+        meta=[
+            ("Paper", '<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/j.1540-6261.1997.tb02724.x">Daniel, K., M. Grinblatt, S. Titman and R. Wermers (1997), Measuring Mutual Fund Performance with Characteristic-Based Benchmarks, <em>Journal of Finance</em></a>'),
+            ("Data", 'CRSP monthly stock file, <code>msf_v2</code> <span class="tag ciz">CIZ format</span>; Compustat annual fundamentals; CRSP/Compustat link table'),
+            ("Sample", "CRSP common stocks, January 1970 to June 2026"),
+            ("Author", "Qingyi (Freda) Song Drechsler"),
+        ],
+        intro="",
+    ),
 }
 
 
