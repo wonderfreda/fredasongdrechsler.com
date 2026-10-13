@@ -247,4 +247,4 @@ Did you know that you can save Pandas dataframe directly to SAS native format as
 
 Hopefully by now you feel comfortable finding your Python way in the data jungle on WRDS server. You can click the "Full Code" button to download the entire code in ipynb format. I will elaborate some of the basic python analytics techniques in the next section.
 
-<div class="btn-row"><a class="primary" href="https://drive.google.com/file/d/1WYY5prgMwn6kIPTAR1KyJTlbOLIzSdDA/view?ths=true">Full Code</a></div>
+<div class="btn-row"><a class="primary" href="../notebooks/maneuvering_wrds_data.ipynb" download>Full Code (.ipynb)</a></div>

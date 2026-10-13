@@ -24,12 +24,11 @@ PAGES = {
     "intro-to-python-for-fnce": "intro-to-python-for-fnce/index.qmd",
     "intro-to-python-for-fnce/maneuvering-wrds-data": "intro-to-python-for-fnce/maneuvering-wrds-data.qmd",
     "intro-to-python-for-fnce/sp500-constituents": "intro-to-python-for-fnce/sp500-constituents.qmd",
-    "intro-to-python-for-fnce/exchange-rate": "intro-to-python-for-fnce/exchange-rate.qmd",
     "data-crunching/connect-wrds": "data-crunching/connect-wrds.qmd",
     "textual-analysis": "textual-analysis/index.qmd",
-    "textual-analysis/wrds-sec": "textual-analysis/wrds-sec.qmd",
+    "textual-analysis/wrds-sec": "textual-analysis/wrds-sec.ipynb",
     "web-scraping": "web-scraping/index.qmd",
-    "web-scraping/european-short-position-data": "web-scraping/european-short-position-data.qmd",
+    "web-scraping/european-short-position-data": "web-scraping/european-short-position-data.ipynb",
 }
 # Display titles where the Google Sites heading was a slug; body text is untouched.
 TITLES = {
@@ -49,6 +48,7 @@ ALL_TARGETS = {**PAGES, "cv": "cv.qmd", "home": "index.qmd", "": "index.qmd",
                "data-crunching/pead": "data-crunching/pead.ipynb",
                "data-crunching/dgtw": "data-crunching/dgtw.ipynb",
                "data-crunching/io_breadth": "data-crunching/io_breadth.ipynb",
+               "intro-to-python-for-fnce/exchange-rate": "intro-to-python-for-fnce/exchange-rate.ipynb",
                "textual-analysis/textual-analysis-on-sp500-companies": "textual-analysis/textual-analysis-on-sp500-companies.ipynb"}
 
 BLOCK = re.compile(

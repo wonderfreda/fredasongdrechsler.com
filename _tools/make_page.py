@@ -10,7 +10,20 @@ import sys
 import nbformat as nbf
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-WIDE_COLS = 9
+TEXT_COLUMN_PX = 650   # width of the site's text column
+
+
+def table_too_wide(html):
+    """Estimate a rendered output table's width from its header and cell text (compact table style)."""
+    html = re.sub(r"<style.*?</style>", "", html, flags=re.S)
+    rows = [[re.sub(r"<[^>]+>", "", cell).strip() for cell in re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", r, re.S)]
+            for r in re.findall(r"<tr.*?>(.*?)</tr>", html, re.S)]
+    rows = [r for r in rows if r]
+    if not rows:
+        return False
+    ncol = max(len(r) for r in rows)
+    chars = [min(max((len(r[i]) for r in rows if i < len(r)), default=0), 26) for i in range(ncol)]
+    return sum(chars) * 7.2 + ncol * 16 > TEXT_COLUMN_PX
 
 PAGES = {
     "momentum": dict(
@@ -109,6 +122,30 @@ As CUSIPs are more reliable company identifiers, we first try to match as much a
         ],
         intro="",
     ),
+    "exchange-rate": dict(
+        src="notebooks/exchange_rate.ipynb",
+        dest="intro-to-python-for-fnce/exchange-rate.ipynb",
+        title="Exchange Rate",
+        subtitle="Exchange rate data on WRDS: Compustat Global, Worldscope and Datastream",
+        meta=[
+            ("Data", "Compustat Global <code>g_exrt_mth</code>; Worldscope <code>wsinfo</code>, <code>wsndata</code>; Datastream <code>ds2fxcode</code>, <code>ds2fxrate</code>"),
+            ("Example", "Chinese Yuan (CNY) per US Dollar (USD)"),
+            ("Author", "Qingyi (Freda) Song Drechsler"),
+        ],
+        intro="",
+    ),
+    "wrds-sec": dict(
+        src="notebooks/wrds_sec.ipynb",
+        dest="textual-analysis/wrds-sec.ipynb",
+        title="WRDS SEC",
+        subtitle="SEC indices and filings on WRDS",
+        meta=[
+            ("Data", "WRDS SEC Analytics Suite: <code>wrdssec.wciklink_names</code>, <code>forms</code>, <code>wrds_forms</code>; filings on the WRDS server (<code>/wrds/sec/wrds_clean_filings</code>)"),
+            ("Example", "10-K filings of Apple (AAPL) and Wells Fargo (WFC), 2015 to 2021"),
+            ("Author", "Qingyi (Freda) Song Drechsler"),
+        ],
+        intro="",
+    ),
 }
 
 
@@ -133,10 +170,10 @@ def build(name):
     for c in page.cells:
         if c.cell_type == "markdown" and c.source.lstrip().startswith("# "):
             c.source = c.source.lstrip().split("\n", 1)[1].strip() if "\n" in c.source.strip() else ""
-    # Wide table outputs (more than WIDE_COLS columns) use the page width instead of the text column
+    # Table outputs too wide for the text column use the page width instead
     for c in page.cells:
         if c.cell_type == "code" and any(
-                len(re.findall(r"<th", re.search(r"<tr.*?</tr>", o["data"]["text/html"], re.S).group(0))) > WIDE_COLS
+                table_too_wide(o["data"]["text/html"])
                 for o in c.get("outputs", []) if "text/html" in o.get("data", {}) and "<table" in o["data"]["text/html"]):
             c.source = "#| column: page\n" + c.source
     body = [c for c in page.cells if not (c.cell_type == "markdown" and not c.source.strip())]

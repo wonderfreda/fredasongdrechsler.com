@@ -6,6 +6,8 @@ project:
     - "**/*.qmd"
     - "data-crunching/*.ipynb"
     - "textual-analysis/*.ipynb"
+    - "intro-to-python-for-fnce/*.ipynb"
+    - "web-scraping/*.ipynb"
     - "!notebooks/"
   resources:
     - "notebooks/*.ipynb"
@@ -35,18 +37,18 @@ website:
         - intro-to-python-for-fnce/index.qmd
         - intro-to-python-for-fnce/maneuvering-wrds-data.qmd
         - intro-to-python-for-fnce/sp500-constituents.qmd
-        - intro-to-python-for-fnce/exchange-rate.qmd
+        - intro-to-python-for-fnce/exchange-rate.ipynb
     - title: Textual Analysis
       style: floating
       contents:
         - textual-analysis/index.qmd
-        - textual-analysis/wrds-sec.qmd
+        - textual-analysis/wrds-sec.ipynb
         - textual-analysis/textual-analysis-on-sp500-companies.ipynb
     - title: Web Scraping
       style: floating
       contents:
         - web-scraping/index.qmd
-        - web-scraping/european-short-position-data.qmd
+        - web-scraping/european-short-position-data.ipynb
     - title: Data Crunching
       style: floating
       contents:
