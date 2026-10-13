@@ -19,7 +19,7 @@ import sys
 import nbformat as nbf
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from make_page import header, table_too_wide  # noqa: E402
+from make_page import direct_plotly, header, table_too_wide  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, "notebooks", "originals", "european-short-position-data.qmd")
@@ -228,6 +228,7 @@ cells[-len(norway.cells) + 1].source = "### example: Norway\n\n" + cells[-len(no
 page = nbf.v4.new_notebook()
 page.cells = cells
 page.metadata = norway.metadata
+direct_plotly(page)
 nbf.write(page, DEST)
 too_long = [l for c in norway.cells if c.cell_type == "code" for l in c.source.splitlines() if len(l) > 75]
 print(f"wrote {os.path.relpath(DEST, ROOT)} ({len(cells)} cells)")

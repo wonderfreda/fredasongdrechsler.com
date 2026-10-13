@@ -25,6 +25,40 @@ def table_too_wide(html):
     chars = [min(max((len(r[i]) for r in rows if i < len(r)), default=0), 26) for i in range(ncol)]
     return sum(chars) * 7.2 + ncol * 16 > TEXT_COLUMN_PX
 
+def direct_plotly(nb):
+    """Load Plotly with a plain <script> tag instead of through require.js.
+
+    Plotly's notebook_connected output loads plotly.js with require.js, which Quarto then adds to the
+    page; that raises "Mismatched anonymous define()" and can leave a chart blank, depending on
+    script timing. Here the loader becomes a plain script tag (once per page) and each chart's
+    require(["plotly"], ...) wrapper a plain function call.
+    """
+    loaded = False
+    for c in nb.cells:
+        for o in c.get("outputs", []):
+            html = o.get("data", {}).get("text/html")
+            if html is None:
+                continue
+            html = "".join(html) if isinstance(html, list) else html
+            if "requirejs.config" in html:
+                url = re.search(r"'plotly': \['([^']+)'\]", html).group(1)
+                # Quarto still loads require.js for any page with HTML output, so define() is hidden
+                # before plotly.js loads (otherwise plotly registers as a require module and leaves
+                # no global Plotly). It stays hidden: nothing later on the page uses require.js, and
+                # Quarto's zenscroll.js, loaded at the end, would otherwise raise "Mismatched
+                # anonymous define()" too.
+                html = "" if loaded else (
+                    '<script>window.define = undefined;</script>\n'
+                    f'<script src="{url}.js" charset="utf-8"></script>')
+                loaded = True
+            elif 'require(["plotly"], function(Plotly) {' in html:
+                html = html.replace('require(["plotly"], function(Plotly) {', "(function() {")
+                head, sep, tail = html.rpartition("});")
+                html = head + "})();" + tail
+            o["data"]["text/html"] = html
+    return nb
+
+
 PAGES = {
     "momentum": dict(
         src="notebooks/momentum_ciz.ipynb",
@@ -179,6 +213,7 @@ def build(name):
     body = [c for c in page.cells if not (c.cell_type == "markdown" and not c.source.strip())]
     front = f'---\ntitle: "{p["title"]}"\nsubtitle: "{p["subtitle"]}"\n---'
     page.cells = [nbf.v4.new_raw_cell(front), nbf.v4.new_markdown_cell(header(p))] + body
+    direct_plotly(page)
     nbf.write(page, os.path.join(ROOT, p["dest"]))
     print(f"wrote {p['dest']} ({len(page.cells)} cells)")
 
