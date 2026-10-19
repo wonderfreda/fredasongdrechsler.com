@@ -177,7 +177,7 @@
     "href": "fun-stuff.html",
     "title": "Fun Stuff",
     "section": "",
-    "text": "Interactive Online Appendix (link) of my paper:\nDissemination, Publication, and Impact of Finance Research: When Novelty Meets Conventionality, with Rui Dai, Lawrence Donohue, and Wei Jiang\nConnect4 code by my daughter. It’s part of her summer python project.\nOption 1: Embedded using repl.it.\n(May take a minute to initialize and update Python.)\n\nOption 2: Embedded using create.withcode.uk\n(please scroll to the bottom to run the code by clicking on the green button)\n&lt;a target=\"_blank\" href=\"https://create.withcode.uk/python/BPi\"&gt;create.withcode.uk&lt;/a&gt;"
+    "text": "Interactive Online Appendix of my paper:\nDissemination, Publication, and Impact of Finance Research: When Novelty Meets Conventionality, with Rui Dai, Lawrence Donohue, and Wei Jiang\nConnect4 code by my daughter. It’s part of her summer python project.\nEmbedded using create.withcode.uk\n(please scroll to the bottom to run the code by clicking on the green button)\n&lt;a target=\"_blank\" href=\"https://create.withcode.uk/python/BPi\"&gt;create.withcode.uk&lt;/a&gt;"
   },
   {
     "objectID": "data-crunching/connect-wrds.html",
