@@ -10,6 +10,7 @@ project:
     - "web-scraping/*.ipynb"
     - "!notebooks/"
   resources:
+    - "CNAME"
     - "notebooks/*.ipynb"
 
 website:
