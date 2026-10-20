@@ -1,7 +1,7 @@
 """Execute notebooks in place against WRDS and report errors.
 
 Usage (Anaconda python, WRDS username in PGUSER so wrds.Connection() reads ~/.pgpass):
-    PGUSER=qsong ~/opt/anaconda3/bin/python _tools/run_notebook.py notebooks/momentum_ciz.ipynb [...]
+    PGUSER=<your_wrds_username> ~/opt/anaconda3/bin/python _tools/run_notebook.py notebooks/momentum_ciz.ipynb [...]
 """
 import os
 import sys

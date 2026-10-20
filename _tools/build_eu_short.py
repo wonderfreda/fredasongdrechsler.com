@@ -1,6 +1,6 @@
 """Build the European Short Position Data page (web-scraping/european-short-position-data.ipynb).
 
-The scraping pipeline itself lives in Freda's private repo github.com/wonderfreda/eu236; the page
+The scraping pipeline itself lives in a separate private repo (not linked from the site); the page
 now shows the data it produces plus the Norway API download as a runnable example:
 
   notebooks/eu_short_norway.ipynb     the Norway example (code from eu236 Part 2, Section 1),
@@ -26,7 +26,7 @@ PAGE = os.path.join(ROOT, "notebooks", "originals", "european-short-position-dat
 DEST = os.path.join(ROOT, "web-scraping", "european-short-position-data.ipynb")
 NORWAY = os.path.join(ROOT, "notebooks", "eu_short_norway.ipynb")
 OVERVIEW = os.path.join(ROOT, "_tools", "eu_short_overview.ipynb")  # not published: local data path
-EU236 = os.path.expanduser("~/wrds-rd-work/eu236")
+EU236 = os.path.expanduser(os.environ.get("EU236_DIR", "~/eu236"))  # local clone of the pipeline repo
 DATA = os.path.join(EU236, "outputs", "final_all_country_20260928.csv")
 UPDATE = "September 28, 2026"
 PYTHON = os.path.expanduser("~/opt/anaconda3/bin/python")

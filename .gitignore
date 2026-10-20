@@ -7,3 +7,6 @@ __pycache__/
 /_reference/
 *.pkl
 /.venv-nlp/
+
+# EU short overview notebook: built from a local data file, not published
+_tools/eu_short_overview.ipynb

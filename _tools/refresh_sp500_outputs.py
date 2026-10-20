@@ -4,7 +4,7 @@ Runs the page's own code blocks against WRDS and writes 10 randomly drawn rows o
 data frame (fixed seed, so a refresh does not reshuffle them) between the marker comments
 <!-- output:sp500ccm --> ... <!-- /output:sp500ccm -->.
 
-Usage: PGUSER=qsong ~/opt/anaconda3/bin/python _tools/refresh_sp500_outputs.py
+Usage: PGUSER=<your_wrds_username> ~/opt/anaconda3/bin/python _tools/refresh_sp500_outputs.py
 """
 import os
 import re

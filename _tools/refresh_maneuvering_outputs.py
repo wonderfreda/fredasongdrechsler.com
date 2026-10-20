@@ -8,7 +8,7 @@ output as a Markdown table between marker comments:
     <!-- /output:NAME -->
 
 Usage (Anaconda python, WRDS username in PGUSER so wrds.Connection() reads ~/.pgpass):
-    PGUSER=qsong ~/opt/anaconda3/bin/python _tools/refresh_maneuvering_outputs.py
+    PGUSER=<your_wrds_username> ~/opt/anaconda3/bin/python _tools/refresh_maneuvering_outputs.py
 """
 import os
 import re
